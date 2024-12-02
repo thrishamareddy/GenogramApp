@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Guardian } from '../../../core/models/guardian';
-import { NameOf } from '../../../core/services/NameOf';
 import { AddGuardianComponent } from '../add-guardian/add-guardian.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,6 +15,7 @@ import { RemarksDialogComponent } from '../remarks-dialog/remarks-dialog.compone
 import { Edge } from '@swimlane/ngx-graph';
 import { ChildService } from '../../../core/services/child.service';
 import { ToastrService } from 'ngx-toastr';
+import { NameOf } from '../../../core/utilities/NameOf';
 
 @Component({
   selector: 'app-guardian-table',
@@ -81,9 +81,10 @@ export class GuardianTableComponent {
   }
 
   openAddGuardianDialog(guardian1:any): void {
+    debugger
     const dialogRef = this.dialog.open(AddGuardianComponent, {
       data: { guardian: guardian1,guardians:this.guardians },
-      // width: '500px',
+      width: '600px',
     });
 
     dialogRef.afterClosed().subscribe((result)=>{
@@ -91,16 +92,32 @@ export class GuardianTableComponent {
       if(result!=false){
         this.guardianService
         .addOrUpdateGuardian( result.id,result).subscribe(data=>{
-          window.location.reload();
+          if (result.id) {
+            this.guardians = this.guardians.map((re) =>
+              re.id === result.id
+                ? { ...re, ...data, isPrimaryContact: true }
+                : { ...re, isPrimaryContact: false }
+            );
+          } else {
+            this.guardians = this.guardians.map((re) => ({
+              ...re,
+              isPrimaryContact: false,
+            })); 
+            this.guardians.push({ ...data, isPrimaryContact: true }); 
+            setTimeout(() => {
+              location.reload(); 
+            }, 2000);
+          }
+          if(data.id){this.toastr.success("Updated sucessfully");}
+          else{
+            this.toastr.success("Created sucessfully");
+          }
         })
       }
     })
     
   }
   
-
- 
-
   viewGenogram() {
     const nodes = this.guardians.map(g => ({
       id: g.id.toString(),

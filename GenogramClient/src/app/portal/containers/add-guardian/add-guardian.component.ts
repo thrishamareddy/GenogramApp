@@ -62,12 +62,7 @@ export class AddGuardianComponent {
       remarks: this.data.guardian.remarks,
       childId:this.data.guardian.childId||1,
     });
-
-    
   }
-
- 
-  
 
   getAvailableRelationships(): string[] {
     const maxCounts = {
@@ -98,29 +93,5 @@ export class AddGuardianComponent {
   getRemainingRelationshipMessage(): string {
     const remainingRelationships = this.getAvailableRelationships();
     return `Available relationships: ${remainingRelationships.join(', ')}`;
-  }
-
-  // onSave(): void {
-  //   debugger;
-  //   if (this.guardianForm.valid) {
-  //     const guardianData = this.guardianForm.value;
-  //     const childId = this.childService.getChildId();
-  //     this.guardianService
-  //       .addOrUpdateGuardian(this.data?.guardianId, guardianData, childId)
-  //       .subscribe({
-  //         next: (response) => {
-  //           this.save.emit(response);
-  //           this.dialogRef.close(response);
-  //         },
-  //         error: (err) => {
-  //           console.error('Error saving guardian:', err);
-  //         },
-  //       });
-  //   }
-  // }
-  
-  onCancel(): void {
-    this.cancel.emit();
-    this.dialogRef.close();
   }
 }

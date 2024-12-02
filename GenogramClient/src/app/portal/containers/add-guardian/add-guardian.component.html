@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  {{ data.guardian.id==0 ? 'Add Guardian' : 'Update Guardian' }}
+  {{ data.guardian.id==undefined ? 'Add Guardian' : 'Update Guardian' }}
 </h2>
 <mat-dialog-content>
   <form [formGroup]="guardianForm" class="form-container">
