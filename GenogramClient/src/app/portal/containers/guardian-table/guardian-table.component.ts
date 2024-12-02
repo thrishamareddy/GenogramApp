@@ -66,7 +66,7 @@ export class GuardianTableComponent {
     this.guardianService.deleteGuardian(contactId).subscribe({
       next: (response: any) => {
         this.guardians = this.guardians.filter(g => g.id !== contactId); 
-        this.toastr.success("Guardian deleted successfully."); 
+        this.toastr.success("Relation deleted successfully."); 
       },
       error: (err) => {
         console.error("Error deleting guardian:", err);
@@ -108,9 +108,9 @@ export class GuardianTableComponent {
               location.reload(); 
             }, 2000);
           }
-          if(data.id){this.toastr.success("Updated sucessfully");}
+          if(data.id){this.toastr.success("Relation Updated successfully");}
           else{
-            this.toastr.success("Created sucessfully");
+            this.toastr.success("Relation Created successfully");
           }
         })
       }

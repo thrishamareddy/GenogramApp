@@ -10,7 +10,7 @@ import {MatFormFieldModule} from '@angular/material/form-field'
 @Component({
   selector: 'app-edit-user',
   standalone: true,
-  imports:[FormsModule, MatFormFieldModule,MatInputModule,MatNativeDateModule,MatDatepickerModule,MaterialModule,ReactiveFormsModule],
+  imports:[MatInputModule, FormsModule, MatFormFieldModule,MatInputModule,MatNativeDateModule,MatDatepickerModule,MaterialModule,ReactiveFormsModule],
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.scss',
   providers: [
@@ -19,13 +19,16 @@ import {MatFormFieldModule} from '@angular/material/form-field'
  ]
 })
 export class EditUserComponent {
+
     editForm: FormGroup;   
+profileImage: any;
     constructor(
       private toastr:ToastrService,
       private dialogRef: MatDialogRef<EditUserComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       private fb: FormBuilder
     ) {
+      debugger;
       this.editForm = this.fb.group({
         id:[data.user.id],
         name: [data.user.name, Validators.required],
@@ -33,7 +36,11 @@ export class EditUserComponent {
         nationality: [data.user.nationality],
         language: [data.user.language],
         dateOfBirth: [data.user.dateOfBirth|| ''],
+        imagePath:[data.user.imagePath||'']
       });
+      if (data.user.imagePath) {
+        this.profileImage = data.user.imagePath;  
+      }
     }
   
     onSave(): void {
@@ -48,5 +55,17 @@ export class EditUserComponent {
   
     onCancel(): void {
       this.dialogRef.close(null);
+    }
+    onFileSelected(event: Event): void {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          debugger
+          this.profileImage = reader.result as string; 
+          this.editForm.patchValue({ imagePath: this.profileImage }); 
+        };
+        reader.readAsDataURL(file); 
+      }
     }
   }

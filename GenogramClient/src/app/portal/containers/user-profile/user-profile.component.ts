@@ -18,7 +18,7 @@ export class UserProfileComponent {
 
   openEditDialog(): void {
     const dialogRef = this.dialog.open(EditUserComponent, {
-      width: '550px',
+      width: '650px',
       data: { user: this.user },
     });
     dialogRef.afterClosed().subscribe((result) => {

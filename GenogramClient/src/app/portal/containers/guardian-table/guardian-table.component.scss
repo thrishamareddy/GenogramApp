@@ -138,9 +138,9 @@
 /* Styling the button container */
 .button-container {
   display: flex;
-  justify-content: flex-start;  /* Align buttons to the left */
-  gap: 20px;  /* Space between buttons */
-  padding: 15px 0;  /* Add vertical padding */
+  justify-content: flex-start; 
+  gap: 20px;  
+  padding: 15px 0;  
   cursor: pointer;
 }
 
@@ -159,7 +159,7 @@
 
 .button-container button[color="primary"] {
   background-color: #72b8ac; /* Primary color (blue) */
-  color: white;
+  // color: white;
   cursor: pointer;
 }
 

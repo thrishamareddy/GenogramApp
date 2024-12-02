@@ -5,6 +5,6 @@ export interface User {
     nationality?: string,
     language?: string,
     dateOfBirth?: string,
-    photo?: string,
+    imagePath?: string,
     Guardians?:any;
 }

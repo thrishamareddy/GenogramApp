@@ -1,5 +1,5 @@
 <div class="user-info">
-  <img [src]="'girl.jpg'" alt="User Photo" class="profile-photo" />
+  <img  [src]="user?.imagePath || 'girl.jpg'"  alt="User Photo" class="profile-photo" />
   <div class="details-container">
     <h5>
       <b>{{ user?.name }}</b>

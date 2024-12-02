@@ -46,6 +46,17 @@
           Date of Birth is required.
         </mat-error>
       </mat-form-field>
+      <div class="form-column">
+        <label>Profile Image</label>
+        <input 
+          type="file" 
+          (change)="onFileSelected($event)" 
+        />
+        <div class="image-preview" *ngIf="profileImage">
+          <img [src]="profileImage" alt="Profile Image" style="max-width: 100%; max-height: 150px;" />
+        </div>
+      </div>
+      
       
     </div>
   </form>
