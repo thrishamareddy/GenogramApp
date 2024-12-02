@@ -7,6 +7,7 @@ namespace GenogramApp.Domain.Interfaces
     {
         Task<bool> AddChildAsync(ChildDto childDto);
         Task<ChildDto> GetChildDetailsAsync(int id);
+        Task<IEnumerable<Child>> GetAllChildrenAsync();
         Task<bool> UpdateAsync(ChildDto child);
     }
 }

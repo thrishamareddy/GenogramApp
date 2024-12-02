@@ -28,6 +28,13 @@ namespace GenogramApp.Application.Services
                 return true;
         }
 
+        public async Task<IEnumerable<Child>> GetAllChildrenAsync()
+        {
+            var children = _unitOfWork.Child.GetAll();
+            return children;
+        }
+
+
         public async Task<ChildDto> GetChildDetailsAsync(int id)
         {
             var child = await _unitOfWork.Child.GetByIdAsync(c => c.Id == id, c => c.Guardians);

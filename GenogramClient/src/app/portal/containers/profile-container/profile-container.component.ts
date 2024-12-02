@@ -8,15 +8,17 @@ import { Guardian } from '../../../core/models/guardian';
 import { ChildService } from '../../../core/services/child.service';
 import { GuardianService } from '../../../core/services/guardian.service';
 import { ActivatedRoute } from '@angular/router';
+import { HeaderComponent } from "../header/header.component";
 @Component({
   selector: 'app-profile-container',
   standalone: true,
-  imports: [CommonModule,MatTabsModule,UserProfileComponent,GuardianTableComponent],
+  imports: [CommonModule, MatTabsModule, UserProfileComponent, GuardianTableComponent, HeaderComponent],
   templateUrl:'./profile-container.component.html',
   styleUrl: './profile-container.component.scss'
 })
 
 export class ProfileContainerComponent implements OnInit {
+
   user:User|null=null;
   guardians: Guardian[]=[] ;
   selectedTabIndex = 2;

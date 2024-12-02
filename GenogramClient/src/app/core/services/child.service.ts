@@ -14,12 +14,18 @@ export class ChildService {
   constructor(private http: HttpClient) {}
 
   private baseUrl = 'https://localhost:7263/api/Home';
+  getAllChild(): Observable<any>{
+    return this.http.get(`${this.baseUrl}/ChildDetails`);
+  }
   getChildDetails(Id:number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${Id}`);
   }
   updateChild(child:User|null): Observable<any> {
     debugger;
     return this.http.post(`${this.baseUrl}/EditChild`,child);
+  }
+  addChild(child:User|null):Observable<any>{
+    return this.http.post(`${this.baseUrl}/CreateChild`,child);
   }
   setChildId(id: number): void {
     this.childId = id;

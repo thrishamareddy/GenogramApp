@@ -1,0 +1,25 @@
+.header-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px;
+    background-color: #72b8ac; 
+    position: relative;
+  }
+  
+  .back-button {
+    font-size: 16px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: right;
+  }
+  
+  .genogram-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    flex-grow: 1; 
+    text-align: left;
+  }
+  

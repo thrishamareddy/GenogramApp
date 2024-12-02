@@ -15,6 +15,12 @@ namespace GenogramApp.Api.Controllers
         {
             _childService = childService;
         }
+        [HttpGet("ChildDetails")]
+        public async Task<IActionResult> GetAllChildDetails()
+        {
+            var child = await _childService.GetAllChildrenAsync();
+            return Ok(child);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetChildDetails(int id)
         {
