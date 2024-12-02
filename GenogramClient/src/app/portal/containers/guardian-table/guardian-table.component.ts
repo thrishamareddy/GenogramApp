@@ -16,6 +16,7 @@ import { Edge } from '@swimlane/ngx-graph';
 import { ChildService } from '../../../core/services/child.service';
 import { ToastrService } from 'ngx-toastr';
 import { NameOf } from '../../../core/utilities/NameOf';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-guardian-table',
@@ -36,6 +37,7 @@ import { NameOf } from '../../../core/utilities/NameOf';
 })
 export class GuardianTableComponent {
   @Input() guardians: Guardian[] = [];
+  childId:any;
   displayedColumns: string[] = NameOf.those<Guardian>([
     'actions',
     'firstName',
@@ -51,8 +53,17 @@ export class GuardianTableComponent {
     private toastr: ToastrService,
     private childService: ChildService,
     private dialog: MatDialog,
-    private guardianService: GuardianService
-  ) {}
+    private guardianService: GuardianService,
+    private route:ActivatedRoute
+
+  ) {  
+    const childIdParam = this.route.snapshot.paramMap.get('childId');
+    if (childIdParam !== null) {
+      this.childId = +childIdParam||1;
+    }
+
+
+  }
 
   showRemarks(remarks: string): void {
     this.dialog.open(RemarksDialogComponent, {
@@ -81,40 +92,47 @@ export class GuardianTableComponent {
   }
 
   openAddGuardianDialog(guardian1:any): void {
-    debugger
+    console.log(guardian1);
     const dialogRef = this.dialog.open(AddGuardianComponent, {
-      data: { guardian: guardian1,guardians:this.guardians },
+      data: { guardian: guardian1,guardians:this.guardians,childId:this.childId },
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe((result)=>{
-      debugger
-      if(result!=false){
-        this.guardianService
-        .addOrUpdateGuardian( result.id,result).subscribe(data=>{
+    dialogRef.afterClosed().subscribe((result) => {
+      debugger;
+      if (result !== false) {
+        this.guardianService.addOrUpdateGuardian(result.id, result).subscribe((data) => {
+          // If the new guardian is marked as primary, reset all primary contact flags
+          if (data.isPrimaryContact === true) {
+            this.guardians = this.guardians.map((guardian) => ({
+              ...guardian,
+              isPrimaryContact: false
+            }));
+          }
+    
+          // If updating an existing guardian, update the guardian's data
           if (result.id) {
-            this.guardians = this.guardians.map((re) =>
-              re.id === result.id
-                ? { ...re, ...data, isPrimaryContact: true }
-                : { ...re, isPrimaryContact: false }
+            this.guardians = this.guardians.map((guardian) =>
+              guardian.id === data.id ? { ...guardian, ...data } : guardian
             );
           } else {
-            this.guardians = this.guardians.map((re) => ({
-              ...re,
-              isPrimaryContact: false,
-            })); 
-            this.guardians.push({ ...data, isPrimaryContact: true }); 
-            setTimeout(() => {
-              location.reload(); 
-            }, 2000);
+            // If adding a new guardian, add to the array
+            this.guardians = [...this.guardians, { ...data }];
           }
-          if(data.id){this.toastr.success("Relation Updated successfully");}
-          else{
-            this.toastr.success("Relation Created successfully");
+    
+          if (data.id) {
+            this.toastr.success('Relation Updated successfully');
+          } else {
+            this.toastr.success('Relation Created successfully');
           }
-        })
+          setTimeout(() => {
+            location.reload(); 
+          }, 2000);
+        });
       }
-    })
+    });
+    
+    
     
   }
   
@@ -139,7 +157,7 @@ export class GuardianTableComponent {
     console.log('Nodes:', nodes);
     console.log('Links:', links);
     const dialogRef = this.dialog.open(GenogramComponent, {
-      width: '1000px',
+      width: '600px',
       height: '600px',
       data: {
         nodes: nodes,

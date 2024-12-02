@@ -33,9 +33,8 @@ export class AddGuardianComponent {
     private guardianService: GuardianService,
     private childService: ChildService,
     public dialogRef: MatDialogRef<AddGuardianComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { guardian:any ,guardians:any}
+    @Inject(MAT_DIALOG_DATA) public data: { guardian:any ,guardians:any,childId:any}
   ) {
-    debugger
     this.guardianForm = this.fb.group({
       id:[''],
       firstName: ['',[Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
@@ -51,16 +50,17 @@ export class AddGuardianComponent {
     if (data?.guardians) {
       this.guardians = data.guardians; 
     }
+    debugger
     this.guardianForm.patchValue({
-      id:this.data.guardian.id||0,
-      firstName: this.data.guardian.firstName,
-      lastName: this.data.guardian.lastName,
-      relationship: this.data.guardian.relationship,
-      email: this.data.guardian.email,
-      phone: this.data.guardian.phone,
-      isPrimaryContact: this.data.guardian.isPrimaryContact,
-      remarks: this.data.guardian.remarks,
-      childId:this.data.guardian.childId||1,
+      id:this.data?.guardian?.id||0,
+      firstName: this.data?.guardian?.firstName||'',
+      lastName: this.data?.guardian?.lastName||'',
+      relationship: this.data?.guardian?.relationship||'',
+      email: this.data?.guardian?.email||'',
+      phone: this.data?.guardian?.phone||'',
+      isPrimaryContact: this.data?.guardian?.isPrimaryContact||false,
+      remarks: this.data?.guardian?.remarks||'',
+      childId:this.data?.guardian?.childId||+this.data.childId,
     });
   }
 

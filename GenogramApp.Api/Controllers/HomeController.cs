@@ -1,6 +1,4 @@
-﻿using GenogramApp.Application.Repository;
-using GenogramApp.Domain.Entities;
-using GenogramApp.Domain.Interfaces;
+﻿using GenogramApp.Domain.Interfaces;
 using GenogramApp.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
