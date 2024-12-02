@@ -18,52 +18,50 @@ namespace GenogramApp.Application.Services
 
         public async Task<IEnumerable<GuardianDto>> GetGuardianDetailsAsync()
         {
-            var guardians = _unitOfWork.Guardian.GetAll(includeProperties: "Child");
-            return await Task.FromResult(_mapper.Map<IEnumerable<GuardianDto>>(guardians));
+            var guardians = await _unitOfWork.Guardian.GetAllAsync(includeProperties: "Child");
+            return _mapper.Map<IEnumerable<GuardianDto>>(guardians);
         }
 
         public async Task<bool> AddOrUpdateGuardianAsync(int? id, GuardianDto guardianDto)
         {
-            
             var guardian = _mapper.Map<Guardian>(guardianDto);
-            
+
             if (guardian.IsPrimaryContact)
             {
-                var existingPrimaryContact = _unitOfWork.Guardian
-                    .GetAll()
-                    .FirstOrDefault(g => g.ChildId == guardian.ChildId && g.IsPrimaryContact);
-
+                var guardians = await _unitOfWork.Guardian.GetAllAsync();
+                var existingPrimaryContact = guardians.FirstOrDefault(g => g.ChildId == guardian.ChildId && g.IsPrimaryContact);
                 if (existingPrimaryContact != null)
                 {
                     existingPrimaryContact.IsPrimaryContact = false;
-                    _unitOfWork.Guardian.Update(existingPrimaryContact);
-                    _unitOfWork.Save();
+                    await _unitOfWork.Guardian.UpdateAsync(existingPrimaryContact);
+                    await _unitOfWork.SaveAsync();
                 }
             }
 
             if (id == 0 || id == null)
             {
-                _unitOfWork.Guardian.Add(guardian);
+                await _unitOfWork.Guardian.AddAsync(guardian);
             }
             else
             {
-                _unitOfWork.Guardian.Update(guardian);
+                await _unitOfWork.Guardian.UpdateAsync(guardian);
             }
 
-            _unitOfWork.Save();
-            return await Task.FromResult(true);
+            await _unitOfWork.SaveAsync();
+            return true;
         }
-        public async Task<bool> Delete(int id)
+
+        public async Task<bool> DeleteAsync(int id)
         {
-            var guardian = _unitOfWork.Guardian.Get(u => u.Id == id);
+            var guardian = await _unitOfWork.Guardian.GetAsync(u => u.Id == id);
             if (guardian == null)
             {
                 return false;
             }
+
             _unitOfWork.Guardian.Remove(guardian);
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
             return true;
         }
-
     }
 }

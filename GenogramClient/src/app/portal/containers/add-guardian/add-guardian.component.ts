@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { GuardianService } from '../../../core/services/guardian.service';
-import { ChildService } from '../../../core/services/child.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Relationship } from '../../../core/Enums/relationship.enum';
 import { ToastrService } from 'ngx-toastr';
 import { MaterialModule } from '../../../core/material/material.module';
@@ -30,8 +28,6 @@ export class AddGuardianComponent {
   constructor(
     private toastr:ToastrService,
     private fb: FormBuilder,
-    private guardianService: GuardianService,
-    private childService: ChildService,
     public dialogRef: MatDialogRef<AddGuardianComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { guardian:any ,guardians:any,childId:any}
   ) {
@@ -41,7 +37,7 @@ export class AddGuardianComponent {
       lastName: ['',[Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       relationship: ['', Validators.required],
       email: ['', [Validators.email,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
-      phone: [''],
+      phone: ['',[Validators.required,Validators.pattern(/^[+]?[0-9]{10,15}$/)]],
       isPrimaryContact: [false],
       remarks: [''],
       childId:['']
@@ -50,7 +46,6 @@ export class AddGuardianComponent {
     if (data?.guardians) {
       this.guardians = data.guardians; 
     }
-    debugger
     this.guardianForm.patchValue({
       id:this.data?.guardian?.id||0,
       firstName: this.data?.guardian?.firstName||'',

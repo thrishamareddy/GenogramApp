@@ -8,7 +8,8 @@ import { ChildService } from '../../../core/services/child.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
-
+import { EditUserComponent } from '../edit-user/edit-user.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -30,7 +31,7 @@ export class HomePageComponent implements OnInit {
   tableView = false; 
   displayedColumns: string[] = ['name', 'address','language','nationality', 'actions'];
 
-  constructor(private childService: ChildService, private router: Router) {}
+  constructor(private childService: ChildService, private router: Router,private dialog:MatDialog) {}
 
   ngOnInit(): void {
     this.childService.getAllChild().subscribe({
@@ -53,6 +54,15 @@ export class HomePageComponent implements OnInit {
   }
 
   addChild(): void {
-    console.log('Add child functionality here.');
+    const dialogRef = this.dialog.open(EditUserComponent, {
+      width: '600px', 
+      data: {}
+    });
+  
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log('User added:', result);
+      }
+    });
   }
 }

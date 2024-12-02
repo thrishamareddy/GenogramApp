@@ -12,7 +12,7 @@ namespace GenogramApp.Application.Repository
         {
             _db = db;
         }
-        public void Update(Guardian obj)
+        public async Task UpdateAsync(Guardian obj)
         {
             var objFromDb = _db.Guardians.FirstOrDefault(u => u.Id == obj.Id);
             if (objFromDb != null)

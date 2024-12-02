@@ -33,14 +33,11 @@
 .location-details {
   display: flex;
   
-  // align-items: center;
-  // gap: 8px; /* Space between icon and text */
 }
 
 .map-link {
   display: flex;
   align-items: center;
-  // gap: 8px; /* Space between icon and link text */
   margin-top: 10px;
 }
 
@@ -56,7 +53,7 @@
 
 .inline-icon {
   vertical-align: middle;
-  margin-right: 8px; /* Space between icon and text */
+  margin-right: 8px; 
 }
 
 @media (max-width: 768px) {

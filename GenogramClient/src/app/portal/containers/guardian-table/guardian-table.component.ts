@@ -87,7 +87,6 @@ export class GuardianTableComponent {
   }
 
   editGuardian(contact:any) {
-    debugger
     this.openAddGuardianDialog(contact);
   }
 
@@ -102,21 +101,17 @@ export class GuardianTableComponent {
       debugger;
       if (result !== false) {
         this.guardianService.addOrUpdateGuardian(result.id, result).subscribe((data) => {
-          // If the new guardian is marked as primary, reset all primary contact flags
           if (data.isPrimaryContact === true) {
             this.guardians = this.guardians.map((guardian) => ({
               ...guardian,
               isPrimaryContact: false
             }));
           }
-    
-          // If updating an existing guardian, update the guardian's data
           if (result.id) {
             this.guardians = this.guardians.map((guardian) =>
               guardian.id === data.id ? { ...guardian, ...data } : guardian
             );
           } else {
-            // If adding a new guardian, add to the array
             this.guardians = [...this.guardians, { ...data }];
           }
     
@@ -124,10 +119,11 @@ export class GuardianTableComponent {
             this.toastr.success('Relation Updated successfully');
           } else {
             this.toastr.success('Relation Created successfully');
+            setTimeout(() => {
+              location.reload(); 
+            }, 2000);
           }
-          setTimeout(() => {
-            location.reload(); 
-          }, 2000);
+          
         });
       }
     });

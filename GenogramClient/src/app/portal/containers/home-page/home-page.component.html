@@ -9,7 +9,7 @@
   <div class="child-container" *ngIf="!tableView">
     <div class="children-display">
       <h3>Children Details</h3>
-      <button mat-raised-button color="primary" (click)="addChild()">Add</button>
+      <button mat-raised-button color="primary" (click)="addChild()" class="add-button"><mat-icon>add_circle</mat-icon>Add</button>
       <div class="child-grid">
         <div *ngFor="let child of children" class="child-card" (click)="navigateToChild(child.id)">
           <img [src]="child.imagePath" alt="Child Image" class="child-image" />

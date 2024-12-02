@@ -4,6 +4,6 @@
     {
         IChildRepository Child { get; }
         IGuardiansRepository Guardian { get; }
-        void Save();
+        Task SaveAsync(); 
     }
 }

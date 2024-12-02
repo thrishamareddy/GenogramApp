@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit User</h2>
+<h2 mat-dialog-title class="edit-title">Edit User</h2>
 <mat-dialog-content>
   <form [formGroup]="editForm" class="form-container">
     <div class="form-column">
@@ -12,6 +12,7 @@
           Invalid Name.
         </mat-error>
       </mat-form-field>
+
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Address</mat-label>
         <input matInput formControlName="address" />
@@ -19,7 +20,7 @@
           Address is required.
         </mat-error>
       </mat-form-field>
-    
+
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Nationality</mat-label>
         <input matInput formControlName="nationality" />
@@ -27,8 +28,7 @@
           Nationality is required.
         </mat-error>
       </mat-form-field>
-    </div>
-    <div class="form-column">
+    
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Language</mat-label>
         <input matInput formControlName="language" />
@@ -36,7 +36,8 @@
           Language is required.
         </mat-error>
       </mat-form-field>
-     
+    </div>
+    <div class="form-column">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Date of Birth</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
@@ -46,18 +47,14 @@
           Date of Birth is required.
         </mat-error>
       </mat-form-field>
+
       <div class="form-column">
         <label>Profile Image</label>
-        <input 
-          type="file" 
-          (change)="onFileSelected($event)" 
-        />
+        <input type="file" (change)="onFileSelected($event)" />
         <div class="image-preview" *ngIf="profileImage">
           <img [src]="profileImage" alt="Profile Image" style="max-width: 100%; max-height: 150px;" />
         </div>
       </div>
-      
-      
     </div>
   </form>
 </mat-dialog-content>

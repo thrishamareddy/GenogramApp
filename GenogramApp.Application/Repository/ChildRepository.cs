@@ -1,20 +1,22 @@
-﻿
-using GenogramApp.Domain.Entities;
+﻿using GenogramApp.Domain.Entities;
 using GenogramApp.Domain.Interfaces;
 using GenogramApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GenogramApp.Application.Repository
 {
-    public class ChildRepository: Repository<Child>,IChildRepository
+    public class ChildRepository : Repository<Child>, IChildRepository
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
+
         public ChildRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
-        public void Update(Child obj)
+
+        public async Task UpdateAsync(Child obj)
         {
-            var objFromDb = _db.Children.FirstOrDefault(u => u.Id == obj.Id);
+            var objFromDb = await _db.Children.FirstOrDefaultAsync(u => u.Id == obj.Id);
             if (objFromDb != null)
             {
                 objFromDb.Name = obj.Name;

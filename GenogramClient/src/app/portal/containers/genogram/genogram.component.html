@@ -1,13 +1,18 @@
-<h5 style="text-align: center;">{{name}}</h5>
-<div style="width: 600px; height: 600px; border: 1px solid #ccc;">
-  <ngx-graph 
+<h5 style="text-align: center;" class="chart-title">{{ name }}</h5>
+<div class="chart-container" #genogramContainer>
+  <ngx-graph
     [layout]="'dagre'"
-    class="chart-container"
-    [view]="[700, 800]"
+    [view]="[graphWidth, graphHeight]"
     [links]="links"
     [nodes]="nodes"
     [autoZoom]="true"
-    [layoutConfig]="layoutConfig">
+    [panOnZoom]="true"
+    [zoomSpeed]="0.1"
+    [fitContainer]="true"
+    [panOnZoom]="true"
+    [layoutConfig]="layoutConfig"
+    [linkCurve]="curve" 
+    class="genogram-graph">
     
     <ng-template #defsTemplate>
       <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
@@ -23,33 +28,40 @@
           [attr.width]="cluster.dimension.width"
           [attr.height]="cluster.dimension.height"
           [attr.fill]="cluster.data.color"
+          class="cluster-rect"
         />
+        <svg:text [attr.x]="cluster.dimension.width / 2" [attr.y]="cluster.dimension.height / 2" text-anchor="middle" class="cluster-text">
+          {{ cluster.label }}
+        </svg:text>
       </svg:g>
     </ng-template>
 
     <ng-template #nodeTemplate let-node>
-      <svg:g class="node">
+      <svg:g class="node" (click)="onNodeClick(node)" [class.selected]="node.selected">
         <svg:rect
-          [attr.width]="node.dimension.width"
-          [attr.height]="node.dimension.height"
+          [attr.width]="calculateNodeWidth(node.label)"
+          [attr.height]="50"
           [attr.fill]="node.id === '1' ? '#79aab2' : '#b0dedb'"
+          rx="10"
+          ry="10"
+          class="node-rect"
         />
-        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
-          {{node.label}}
+        <svg:text alignment-baseline="middle" [attr.x]="calculateNodeWidth(node.label) / 2" [attr.y]="25" text-anchor="middle" class="node-text">
+          {{ node.label }}
         </svg:text>
       </svg:g>
     </ng-template>
 
     <ng-template #linkTemplate let-link>
-      <svg:g class="edge">
-        <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
-        <svg:text class="edge-label" text-anchor="middle">
+      <svg:g class="edge" (mouseenter)="onLinkHover(link)" (mouseleave)="onLinkHover(null)">
+        <svg:path class="line" [attr.stroke]="link.color || '#000'" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+        <svg:text class="edge-label" text-anchor="middle" [attr.fill]="link.color || '#000'">
           <textPath
             class="text-path"
             [attr.href]="'#' + link.id"
             [style.dominant-baseline]="link.dominantBaseline"
             startOffset="50%">
-            {{link.label}}
+            {{ link.label }}
           </textPath>
         </svg:text>
       </svg:g>

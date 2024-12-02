@@ -4,6 +4,6 @@ namespace GenogramApp.Domain.Interfaces
 {
     public interface IGuardiansRepository:IRepository<Guardian>
     {
-        void Update(Guardian obj);
+        Task UpdateAsync(Guardian obj);
     }
 }

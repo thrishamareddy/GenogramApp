@@ -9,43 +9,84 @@ namespace GenogramApp.Api.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IChildService _childService;
+
         public HomeController(IChildService childService)
         {
             _childService = childService;
         }
+
         [HttpGet("ChildDetails")]
-        public async Task<IActionResult> GetAllChildDetails()
+        public async Task<IActionResult> GetChildDetailsAsync()
         {
-            var child = await _childService.GetAllChildrenAsync();
-            return Ok(child);
+            try
+            {
+                var children = await _childService.GetAllChildrenAsync();
+                return Ok(children);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving child details." });
+            }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetChildDetails(int id)
+        public async Task<IActionResult> GetChildAsync(int id)
         {
-            var child = await _childService.GetChildDetailsAsync(id);
+            try
+            {
+                var child = await _childService.GetChildDetailsAsync(id);
+                if (child == null)
+                {
+                    return NotFound(new { message = "Child not found." });
+                }
+                return Ok(child);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving child details." });
+            }
+        }
+
+        [HttpPost("CreateChild")]
+        public async Task<ActionResult> CreateChildAsync(ChildDto childDto)
+        {
+            if (childDto == null)
+            {
+                return BadRequest(new { message = "Invalid child data." });
+            }
+            try
+            {
+                var isCreated = await _childService.AddChildAsync(childDto);
+                if (!isCreated)
+                {
+                    return BadRequest(new { message = "Failed to create child." });
+                }
+                return Ok(new { message = "Child created successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while creating child." });
+            }
+        }
+        [HttpPost("EditChild")]
+        public async Task<ActionResult> EditChildAsync(ChildDto child)
+        {
             if (child == null)
             {
-                return NotFound(new { message = "Child not found." });
+                return BadRequest(new { message = "Invalid child data." });
             }
-            return Ok(child);
-        }
-        [HttpPost("CreateChild")]
-        public async Task<ActionResult> CreateChild(ChildDto childDto)
-        {
-            await _childService.AddChildAsync(childDto);
-            return Ok(new { message = "Child Created Successfully" });
-        }
-
-        [HttpPost("EditChild")]
-        public async Task<ActionResult> EditChild(ChildDto child)
-        {
-            var isUpdated = await _childService.UpdateAsync(child);
-            if (!isUpdated)
+            try
             {
-                return NotFound(new { message = "Child not found." }); 
+                var isUpdated = await _childService.UpdateAsync(child);
+                if (!isUpdated)
+                {
+                    return NotFound(new { message = "Child not found." });
+                }
+                return Ok(child);
             }
-            return Ok(child);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while updating child." });
+            }
         }
-
     }
 }

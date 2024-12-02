@@ -7,6 +7,6 @@ namespace GenogramApp.Domain.Interfaces
     {
         Task<IEnumerable<GuardianDto>> GetGuardianDetailsAsync();
         Task<bool> AddOrUpdateGuardianAsync(int? id, GuardianDto guardian);
-        Task<bool> Delete(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

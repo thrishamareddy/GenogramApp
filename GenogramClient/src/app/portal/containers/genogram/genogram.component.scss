@@ -1,57 +1,148 @@
-// .chart-container {
-//   display: block;
-//   width: 100%;
-//   height: 100vh; /* Make sure it takes up the entire viewport height */
-// }
+/* General Styling */
+.chart-container {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #ccc;
+  position: relative;
+  background-color: #f9f9f9;
+}
 
-// ngx-graph {
-//   width: 100%;
-//   height: 100%;
-//   display: block;
-// }
-.edge {
-  stroke: black;  /* Ensure the link is visible */
-  fill: none;
+.chart-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
 }
- 
-.line {
-  stroke: black;
-  stroke-width: 2;
+
+/* Node Styles */
+.node-rect {
+  stroke: #333;
+  stroke-width: 1px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transition: fill 0.3s ease, stroke 0.3s ease;
 }
- 
+
+.node-rect:hover {
+  fill: #6baed6;
+  stroke: #004b8d;
+}
+
+.node-text {
+  font-size: 14px;
+  fill: #333;
+  font-weight: bold;
+}
+
+/* Selected Node */
+.node.selected .node-rect {
+  fill: #ff4081 !important;
+  stroke: #b71c1c;
+  stroke-width: 2px;
+}
+
+/* Link Styles */
+.edge .line {
+  stroke: #000;
+  stroke-width: 2px;
+  transition: stroke 0.3s ease;
+}
+
+.edge .line:hover {
+  stroke: #ff4081;
+}
+
 .edge-label {
   font-size: 12px;
+  fill: #333;
 }
- 
+
+/* Cluster Styles */
+.cluster-rect {
+  stroke: #666;
+  stroke-width: 1px;
+  fill-opacity: 0.9;
+}
+
+.cluster-text {
+  font-size: 14px;
+  font-weight: bold;
+  fill: #333;
+}
+
+/* Arrowhead Style */
+.arrow-head {
+  fill: #000;
+}
 .chart-container {
+  width: 100vw; /* Full screen width */
+  height: 100vh; /* Full screen height */
+  overflow: hidden; /* Prevent scrolling */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9; /* Light background for contrast */
+}
+
+.chart-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.genogram-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.genogram-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+ngx-graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chart-container {
+  padding-top: 20px;
+  height: 80vh; /* Adjust height as needed */
+  width: 100%;
+  overflow: auto; /* Enable scrolling */
+  border: 1px solid #ccc;
+}
+
+.genogram-graph {
   width: 100%;
   height: 100%;
 }
- 
-.genogram-container {
-  display: flex;
-  flex-direction: column;
-}
- 
-.genogram-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
- 
-.close-button {
-  background: none;
-  border: none;
+
+.node-rect {
   cursor: pointer;
 }
-.close-icon{
-  position: absolute;
-  right: 0;
-  margin:5px;
-  // padding: 5px;
-  margin-right: 20px;
-  border: 1px solid black;
+
+.selected {
+  stroke: #ff0000;
+  stroke-width: 3px;
 }
-.close-icon:hover{
-  background-color: red;
+
+.node-text {
+  font-size: 14px;
 }
+
+.edge-label {
+  font-size: 12px;
+}
+
+.edge .line {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
