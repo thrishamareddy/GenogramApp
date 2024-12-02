@@ -1,0 +1,95 @@
+.user-card {
+  padding: 40px;
+  background-color: rgb(224, 205, 205) !important;
+  border-radius: 8px;
+}
+
+.user-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  position: relative;
+}
+
+.profile-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.edit-icon {
+  cursor: pointer;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.details-container {
+  flex: 1;
+  min-width: 200px;
+}
+
+.location-details {
+  display: flex;
+  
+  // align-items: center;
+  // gap: 8px; /* Space between icon and text */
+}
+
+.map-link {
+  display: flex;
+  align-items: center;
+  // gap: 8px; /* Space between icon and link text */
+  margin-top: 10px;
+}
+
+.right-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  text-align: left;
+}
+
+.inline-icon {
+  vertical-align: middle;
+  margin-right: 8px; /* Space between icon and text */
+}
+
+@media (max-width: 768px) {
+  .user-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-photo {
+    margin-bottom: 20px;
+  }
+
+  .right-details {
+    position: relative !important;
+    right: 0;
+    top: 0;
+    margin-top: 20px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .details-container {
+    text-align: center;
+  }
+
+  .right-details {
+    text-align: left;
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .user-card {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,6 @@
+@GenogramApp.Api_HostAddress = http://localhost:5250
+
+GET {{GenogramApp.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

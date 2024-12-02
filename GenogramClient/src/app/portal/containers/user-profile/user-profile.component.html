@@ -1,0 +1,37 @@
+<div class="user-info">
+  <img [src]="'girl.jpg'" alt="User Photo" class="profile-photo" />
+  <div class="details-container">
+    <h5>
+      <b>{{ user?.name }}</b>
+      <a (click)="openEditDialog()" title="Edit User">
+        <mat-icon class="edit-icon" color="primary">edit</mat-icon>
+      </a>
+    </h5>
+    <div class="location-details">
+      <mat-icon class="inline-icon">location_on</mat-icon>
+      <p>{{ user?.address }}</p>
+    </div>
+    <a
+      href="https://www.google.com/maps?q={{ user?.address }}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="map-link"
+    >
+      <mat-icon class="inline-icon">maps</mat-icon> Open in Google Maps
+    </a>
+    <div class="right-details">
+      <p>
+        <mat-icon class="inline-icon">flag</mat-icon>
+        <strong>Nationality:</strong> {{ user?.nationality }}
+      </p>
+      <p>
+        <mat-icon class="inline-icon">language</mat-icon>
+        <strong>Language:</strong> {{ user?.language }}
+      </p>
+      <p>
+        <mat-icon class="inline-icon">event</mat-icon>
+        <strong>Date of Birth:</strong> {{ user?.dateOfBirth }}
+      </p>
+    </div>
+  </div>
+</div>

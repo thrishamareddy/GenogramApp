@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Edit User</h2>
+<mat-dialog-content>
+  <form [formGroup]="editForm" class="form-container">
+    <div class="form-column">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="editForm.get('name')?.hasError('required')">
+          Name is required.
+        </mat-error>
+        <mat-error *ngIf="editForm.get('name')?.hasError('pattern')">
+          Invalid Name.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address" />
+        <mat-error *ngIf="editForm.get('address')?.hasError('required')">
+          Address is required.
+        </mat-error>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Nationality</mat-label>
+        <input matInput formControlName="nationality" />
+        <mat-error *ngIf="editForm.get('nationality')?.hasError('required')">
+          Nationality is required.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-column">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Language</mat-label>
+        <input matInput formControlName="language" />
+        <mat-error *ngIf="editForm.get('language')?.hasError('required')">
+          Language is required.
+        </mat-error>
+      </mat-form-field>
+     
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="editForm.get('dateOfBirth')?.hasError('required')">
+          Date of Birth is required.
+        </mat-error>
+      </mat-form-field>
+      
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="button-container">
+  <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSave()">Save</button>
+</mat-dialog-actions>

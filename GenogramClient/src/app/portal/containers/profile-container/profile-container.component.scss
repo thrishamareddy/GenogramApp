@@ -1,0 +1,27 @@
+.main-container {
+  display:flex;
+  flex-direction: column;
+  background-color: white; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+  padding: 40px; 
+  margin: 30px; 
+  max-width: 100%; 
+}
+
+.inner-container {
+  padding: 30px; 
+  border-radius: 10px; 
+  background-color: #e4f2f1;
+  margin-bottom: 20px; 
+}
+
+mat-tab-group {
+  .mat-tab-label {
+    font-weight: bold; 
+  }
+
+  .mat-tab-label.active-tab {
+    color: #48d9c3 !important; 
+  }
+}

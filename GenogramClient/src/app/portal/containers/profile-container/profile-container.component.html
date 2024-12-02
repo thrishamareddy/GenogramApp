@@ -1,0 +1,15 @@
+<div class="main-container">
+  <div class="inner-container mat-grid-container">
+    <app-user-profile [user]="user"></app-user-profile>
+  </div>
+  <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="Admissions"  [disabled]="true" ></mat-tab>
+    <mat-tab label="Counseling" [disabled]="true"></mat-tab>
+    <mat-tab label="Guardians" [disabled]="false" class="active-tab">
+      <app-guardian-table [guardians]="guardians"></app-guardian-table>
+    </mat-tab>
+    <mat-tab label="Documents" [disabled]="true"></mat-tab>
+    <mat-tab label="Efforts" [disabled]="true"></mat-tab>
+    <mat-tab label="Emails" [disabled]="true"></mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>
+  {{ data.guardian.id==0 ? 'Add Guardian' : 'Update Guardian' }}
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="guardianForm" class="form-container">
+    <div class="form-column">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" />
+        <mat-error *ngIf="guardianForm.get('firstName')?.hasError('required')">
+          First Name is required.
+        </mat-error>
+        <mat-error *ngIf="guardianForm.get('firstName')?.hasError('pattern')">
+          Invalid First Name
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" />
+        <mat-error *ngIf="guardianForm.get('lastName')?.hasError('required')">
+          Last Name is required.
+        </mat-error>
+        <mat-error *ngIf="guardianForm.get('lastName')?.hasError('pattern')">
+          Invalid Last Name
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Relationship</mat-label>
+        <mat-select formControlName="relationship">
+          <mat-option 
+          *ngFor="let relationship of getAvailableRelationships()" 
+          [value]="relationship">
+          {{ relationship }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="guardianForm.get('relationship')?.hasError('required')">
+        Relationship is required.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  
+  <div class="form-column">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" />
+        <mat-error *ngIf="guardianForm.get('phone')?.hasError('pattern')">
+          Invalid phone number.
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error *ngIf="guardianForm.get('email')?.hasError('email')">
+          Please enter a valid email address.
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Remarks</mat-label>
+        <textarea matInput formControlName="remarks" rows="1"></textarea>
+      </mat-form-field>
+      <mat-checkbox class="primary-contact-box" formControlName="isPrimaryContact">Primary Contact</mat-checkbox>
+    </div>
+  </form>
+    <mat-dialog-actions class="button-container">
+      <button mat-raised-button color="warn" mat-dialog-close="false">Cancel</button> 
+      <button mat-raised-button color="primary" [mat-dialog-close]="guardianForm.value">Save</button>  
+    </mat-dialog-actions>
+</mat-dialog-content>

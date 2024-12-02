@@ -1,0 +1,11 @@
+.chart-container {
+  display: block;
+  width: 100%;
+  height: 100vh; /* Make sure it takes up the entire viewport height */
+}
+
+ngx-graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
