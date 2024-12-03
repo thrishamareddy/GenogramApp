@@ -6,7 +6,16 @@
     margin: 0;
     font-size: 18px;
   }
-  .button {
-    font-size: 14px;
+
+  .custom-dialog-button {
+    background-color: #6fc5c4; 
+    font-weight: bold;
+    border-radius: 4px; 
+    padding: 8px 16px; 
+    transition: background-color 0.3s ease; 
+  }
+  
+  .custom-dialog-button:hover {
+    background-color: #2da0a4; 
   }
   

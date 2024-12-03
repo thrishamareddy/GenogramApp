@@ -25,14 +25,11 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-
 export class HomePageComponent implements OnInit {
   children: any[] = [];
   tableView = false; 
   displayedColumns: string[] = ['name', 'address','language','nationality', 'actions'];
-
   constructor(private childService: ChildService, private router: Router,private dialog:MatDialog) {}
-
   ngOnInit(): void {
     debugger;
     this.childService.getAllChild().subscribe({

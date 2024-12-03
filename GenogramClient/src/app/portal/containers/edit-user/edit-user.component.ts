@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
@@ -13,7 +13,8 @@ import { MatInputModule } from '@angular/material/input';
   imports: [
     MaterialModule,
     MatDatepickerModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule
   ],
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.scss'],
@@ -42,7 +43,7 @@ export class EditUserComponent {
       nationality: [data?.user?.nationality || '', Validators.required],
       language: [data?.user?.language || '', Validators.required],
       dateOfBirth: [data?.user?.dateOfBirth || '', Validators.required],
-      imagePath: [data?.user?.imagePath || '']
+      imagePath: [data?.user?.imagePath || 'public/noImage.jpg']
     });
 
     if (this.isEditMode && data?.user?.imagePath) {

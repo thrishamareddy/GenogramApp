@@ -1,59 +1,67 @@
-<h2 mat-dialog-title class="edit-title">Edit User</h2>
+<h2 mat-dialog-title class="edit-title">
+  {{ data?.user?.id ? 'Edit User' : 'Add User' }}
+</h2>
 <mat-dialog-content>
   <form [formGroup]="editForm" class="form-container">
-    <div class="form-column">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" />
-        <mat-error *ngIf="editForm.get('name')?.hasError('required')">
-          Name is required.
-        </mat-error>
-        <mat-error *ngIf="editForm.get('name')?.hasError('pattern')">
-          Invalid Name.
-        </mat-error>
-      </mat-form-field>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="form-field w-100">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error *ngIf="editForm.get('name')?.hasError('required')">
+            Name is required.
+          </mat-error>
+          <mat-error *ngIf="editForm.get('name')?.hasError('pattern')">
+            Invalid Name.
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="address" />
-        <mat-error *ngIf="editForm.get('address')?.hasError('required')">
-          Address is required.
-        </mat-error>
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field w-100">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" />
+          <mat-error *ngIf="editForm.get('address')?.hasError('required')">
+            Address is required.
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Nationality</mat-label>
-        <input matInput formControlName="nationality" />
-        <mat-error *ngIf="editForm.get('nationality')?.hasError('required')">
-          Nationality is required.
-        </mat-error>
-      </mat-form-field>
-    
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Language</mat-label>
-        <input matInput formControlName="language" />
-        <mat-error *ngIf="editForm.get('language')?.hasError('required')">
-          Language is required.
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="form-column">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Date of Birth</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="editForm.get('dateOfBirth')?.hasError('required')">
-          Date of Birth is required.
-        </mat-error>
-      </mat-form-field>
-
-      <div class="form-column">
-        <label>Profile Image</label>
-        <input type="file" (change)="onFileSelected($event)" />
-        <div class="image-preview" *ngIf="profileImage">
-          <img [src]="profileImage" alt="Profile Image" style="max-width: 100%; max-height: 150px;" />
+        <div class="form-group">
+          <label>Profile Image</label>
+          <input type="file" (change)="onFileSelected($event)" />
+          <div class="image-preview" *ngIf="profileImage">
+            <img [src]="profileImage" alt="Profile Image" style="max-width: 100%; max-height: 150px;" />
+          </div>
         </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="form-field w-100">
+          <mat-label>Nationality</mat-label>
+          <input matInput formControlName="nationality" />
+          <mat-error *ngIf="editForm.get('nationality')?.hasError('required')">
+            Nationality is required.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field w-100">
+          <mat-label>Language</mat-label>
+          <mat-select formControlName="language">
+            <mat-option value="English">English</mat-option>
+            <mat-option value="German">German</mat-option>
+          </mat-select>
+          <mat-error *ngIf="editForm.get('language')?.hasError('required')">
+            Language is required.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field w-100">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="editForm.get('dateOfBirth')?.hasError('required')">
+            Date of Birth is required.
+          </mat-error>
+        </mat-form-field>
       </div>
     </div>
   </form>

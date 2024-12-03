@@ -130,8 +130,6 @@ export class GuardianTableComponent {
       }
     });
     
-    
-    
   }
   
   viewGenogram(): void {

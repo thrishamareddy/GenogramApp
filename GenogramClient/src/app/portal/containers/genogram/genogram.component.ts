@@ -28,6 +28,7 @@ this.dialogRef.close();
     rankPadding:100,
     nodePadding: 20
   };
+  
   curve: any = shape.curveLinear;
   graphWidth: number = window.innerWidth;
   graphHeight: number = window.innerHeight;

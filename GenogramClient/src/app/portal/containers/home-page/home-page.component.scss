@@ -72,11 +72,12 @@ button:hover {
 }
 
 .child-image {
-  width: 100%;
-  height: auto;
+  width: 200px;
+  height: 300px;
   max-height: 150px;
   object-fit: cover;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .child-info h4 {
