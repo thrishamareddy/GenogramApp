@@ -1,10 +1,12 @@
-/* General Styling */
 .chart-container {
-  width: 100%;
-  height: 600px;
-  border: 1px solid #ccc;
-  position: relative;
-  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.genogram-graph {
+  margin: auto; 
 }
 
 .chart-title {
@@ -13,7 +15,6 @@
   margin-bottom: 10px;
 }
 
-/* Node Styles */
 .node-rect {
   stroke: #333;
   stroke-width: 1px;
@@ -32,14 +33,14 @@
   font-weight: bold;
 }
 
-/* Selected Node */
+
 .node.selected .node-rect {
   fill: #ff4081 !important;
   stroke: #b71c1c;
   stroke-width: 2px;
 }
 
-/* Link Styles */
+
 .edge .line {
   stroke: #000;
   stroke-width: 2px;
@@ -55,7 +56,7 @@
   fill: #333;
 }
 
-/* Cluster Styles */
+
 .cluster-rect {
   stroke: #666;
   stroke-width: 1px;
@@ -68,18 +69,17 @@
   fill: #333;
 }
 
-/* Arrowhead Style */
 .arrow-head {
   fill: #000;
 }
 .chart-container {
-  width: 100vw; /* Full screen width */
-  height: 100vh; /* Full screen height */
-  overflow: hidden; /* Prevent scrolling */
+  width: 100vw;
+  height: 100vh; 
+  overflow: hidden; 
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9f9f9; /* Light background for contrast */
+  background-color: #f9f9f9; 
 }
 
 .chart-title {
@@ -113,9 +113,9 @@ ngx-graph {
 
 .chart-container {
   padding-top: 20px;
-  height: 80vh; /* Adjust height as needed */
+  height: 80vh; 
   width: 100%;
-  overflow: auto; /* Enable scrolling */
+  overflow: auto; 
   border: 1px solid #ccc;
 }
 
@@ -146,3 +146,70 @@ ngx-graph {
   stroke-width: 2px;
 }
 
+.chart-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding-top: 11px;
+}
+
+.chart-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.genogram-graph {
+  width: 100%;
+  height: 100%;
+}
+
+.arrow-head {
+  fill: #000;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node-rect {
+  stroke: #000;
+  stroke-width: 1;
+}
+
+.node-text {
+  font-size: 12px;
+  fill: #000;
+  pointer-events: none;
+}
+
+.edge {
+  stroke: #000;
+}
+
+.edge-label {
+  font-size: 10px;
+}
+
+.text-path {
+  font-size: 10px;
+  fill: inherit;
+}
+
+.cluster-rect {
+  stroke: #000;
+  stroke-width: 1;
+}
+
+.cluster-text {
+  font-size: 14px;
+  fill: #fff;
+  pointer-events: none;
+}
+.close-icon{
+  position: absolute;
+  right: 22px;
+  top: 14px;
+  cursor: pointer;
+}

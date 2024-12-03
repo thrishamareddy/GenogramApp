@@ -18,7 +18,7 @@ namespace GenogramApp.Application.Services
 
         public async Task<IEnumerable<GuardianDto>> GetGuardianDetailsAsync()
         {
-            var guardians = await _unitOfWork.Guardian.GetAllAsync(includeProperties: "Child");
+            var guardians = _unitOfWork.Guardian.GetAll(includeProperties: "Child");
             return _mapper.Map<IEnumerable<GuardianDto>>(guardians);
         }
 
@@ -28,7 +28,7 @@ namespace GenogramApp.Application.Services
 
             if (guardian.IsPrimaryContact)
             {
-                var guardians = await _unitOfWork.Guardian.GetAllAsync();
+                var guardians = _unitOfWork.Guardian.GetAll();
                 var existingPrimaryContact = guardians.FirstOrDefault(g => g.ChildId == guardian.ChildId && g.IsPrimaryContact);
                 if (existingPrimaryContact != null)
                 {

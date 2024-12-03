@@ -1,19 +1,14 @@
-<h5 style="text-align: center;" class="chart-title">{{ name }}</h5>
+<h5 class="chart-title">{{ name }}</h5>
+<mat-icon class="close-icon" (click)="closeGenogram()">close</mat-icon>
 <div class="chart-container" #genogramContainer>
   <ngx-graph
-    [layout]="'dagre'"
-    [view]="[graphWidth, graphHeight]"
+    [layout]="'dagreCluster'"
+    [view]="[2000, 2000]"
     [links]="links"
     [nodes]="nodes"
-    [autoZoom]="true"
-    [panOnZoom]="true"
-    [zoomSpeed]="0.1"
-    [fitContainer]="true"
-    [panOnZoom]="true"
-    [layoutConfig]="layoutConfig"
-    [linkCurve]="curve" 
+    [layoutSettings]="layoutConfig"
     class="genogram-graph">
-    
+
     <ng-template #defsTemplate>
       <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
         <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
@@ -37,19 +32,34 @@
     </ng-template>
 
     <ng-template #nodeTemplate let-node>
-      <svg:g class="node" (click)="onNodeClick(node)" [class.selected]="node.selected">
-        <svg:rect
-          [attr.width]="calculateNodeWidth(node.label)"
-          [attr.height]="50"
-          [attr.fill]="node.id === '1' ? '#79aab2' : '#b0dedb'"
-          rx="10"
-          ry="10"
-          class="node-rect"
-        />
-        <svg:text alignment-baseline="middle" [attr.x]="calculateNodeWidth(node.label) / 2" [attr.y]="25" text-anchor="middle" class="node-text">
-          {{ node.label }}
-        </svg:text>
+      <svg:g class="node">
+        <rect [attr.width]="node.dimension?.width"
+              [attr.height]="node.dimension?.height || 60"
+              [attr.fill]="node.id === '1' ? '#79aab2' : '#b0dedb'"
+              rx="5" ry="5"
+              stroke="#000000"
+              stroke-width="1"
+              >
+        </rect>
+   
+        <svg:image
+          *ngIf="node.icon"
+          [attr.href]="node.icon"
+          [attr.x]="5"
+          [attr.y]="5"
+          [attr.width]="node.imageWidth || 20"
+          [attr.height]="node.imageHeight || 20"
+          [attr.preserveAspectRatio]="'xMidYMid meet'"
+          class="node-image"
+        ></svg:image>
+
+   
+      <svg:text alignment-baseline="central" [attr.x]="30" [attr.y]="node.dimension.height / 2">
+        {{ node.label }}
+      </svg:text>
+ 
       </svg:g>
+ 
     </ng-template>
 
     <ng-template #linkTemplate let-link>

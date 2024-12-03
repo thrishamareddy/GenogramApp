@@ -34,6 +34,7 @@ export class HomePageComponent implements OnInit {
   constructor(private childService: ChildService, private router: Router,private dialog:MatDialog) {}
 
   ngOnInit(): void {
+    debugger;
     this.childService.getAllChild().subscribe({
       next: (data) => {
         this.children = data.$values;
@@ -58,10 +59,13 @@ export class HomePageComponent implements OnInit {
       width: '600px', 
       data: {}
     });
-  
+    
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        console.log('User added:', result);
+        result.id=0;
+        this.childService.addChild(result).subscribe((data)=>{
+          
+        })
       }
     });
   }

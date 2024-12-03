@@ -1,30 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Inject, OnChanges, SimpleChanges } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Edge, NgxGraphModule, Node } from '@swimlane/ngx-graph';
+import { Edge, NgxGraphModule, Node, Orientation } from '@swimlane/ngx-graph';
 import { ChildService } from '../../../core/services/child.service';
 import * as shape from 'd3-shape';  
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-genogram',
   templateUrl: './genogram.component.html',
   styleUrls: ['./genogram.component.scss'],
   standalone: true,
-  imports: [CommonModule, NgxGraphModule],
+  imports: [CommonModule, NgxGraphModule,MatIconModule],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ] 
 })
 export class GenogramComponent {
+closeGenogram() {
+this.dialogRef.close();
+}
   nodes: Node[] = [];
   links: Edge[] = [];
   width = window.innerWidth;
   height = window.innerHeight;
   name:any;
-  layoutConfig = {
-    rankDir: 'TB',  
-    nodeSep: 50,    
-    edgeSep: 50,    
-    rankSep: 100,  
-    marginX: 0, 
-    marginY: 0,  
+  layoutConfig = {  
+    orientation:'TB',
+    edgePadding:50,
+    rankPadding:100,
+    nodePadding: 20
   };
   curve: any = shape.curveLinear;
   graphWidth: number = window.innerWidth;
@@ -57,8 +59,5 @@ export class GenogramComponent {
     this.name=this.childService.getChildName();
   }
   
-  onClose(): void {
-    this.dialogRef.close();
-  }
 }
 

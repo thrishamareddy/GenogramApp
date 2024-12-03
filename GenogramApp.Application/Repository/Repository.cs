@@ -38,19 +38,34 @@ namespace GenogramApp.Application.Repository
             return await query.FirstOrDefaultAsync(filter);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(string? includeProperties = null)
+        //public Task<IEnumerable<T>> GetAll(string? includeProperties = null)
+        //{
+        //    IQueryable<T> query = dbSet;
+
+        //    if (!string.IsNullOrEmpty(includeProperties))
+        //    {
+        //        foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        //        {
+        //            query = query.Include(includeProp);
+        //        }
+        //    }
+
+        //    return query.ToListAsync();
+        //}
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
-
             if (!string.IsNullOrEmpty(includeProperties))
             {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProp);
                 }
-            }
 
-            return await query.ToListAsync();
+            }
+            return query.ToList();
+
         }
 
         public void Remove(T entity)

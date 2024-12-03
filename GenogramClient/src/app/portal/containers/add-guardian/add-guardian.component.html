@@ -5,7 +5,7 @@
   <form [formGroup]="guardianForm" class="form-container">
     <div class="row">
       <div class="col-12 col-md-6">
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>First Name</mat-label>
           <input matInput formControlName="firstName" />
           <mat-error *ngIf="guardianForm.get('firstName')?.hasError('required')">
@@ -15,7 +15,7 @@
             Invalid First Name
           </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Last Name</mat-label>
           <input matInput formControlName="lastName" />
           <mat-error *ngIf="guardianForm.get('lastName')?.hasError('required')">
@@ -26,7 +26,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Relationship</mat-label>
           <mat-select formControlName="relationship">
             <mat-option 
@@ -42,7 +42,7 @@
       </div>
 
       <div class="col-12 col-md-6">
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Phone</mat-label>
           <input matInput formControlName="phone" />
           <mat-error *ngIf="guardianForm.get('phone')?.hasError('required')">
@@ -53,7 +53,7 @@
           </mat-error>
         </mat-form-field>
         
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" />
           <mat-error *ngIf="guardianForm.get('email')?.hasError('email')">
@@ -61,7 +61,7 @@
           </mat-error>
         </mat-form-field>
         
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Remarks</mat-label>
           <textarea matInput formControlName="remarks" rows="1"></textarea>
         </mat-form-field>

@@ -15,6 +15,7 @@ export class ChildService {
 
   private baseUrl = 'https://localhost:7263/api/Home';
   getAllChild(): Observable<any>{
+    debugger
     return this.http.get(`${this.baseUrl}/ChildDetails`);
   }
   getChildDetails(Id:number): Observable<any> {
@@ -25,6 +26,7 @@ export class ChildService {
     return this.http.post(`${this.baseUrl}/EditChild`,child);
   }
   addChild(child:User|null):Observable<any>{
+    debugger;
     return this.http.post(`${this.baseUrl}/CreateChild`,child);
   }
   setChildId(id: number): void {

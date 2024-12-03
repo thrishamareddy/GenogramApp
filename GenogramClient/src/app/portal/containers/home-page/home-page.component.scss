@@ -85,8 +85,16 @@ button:hover {
   color: #333;
 }
 .add-button{
-  display:flex;
-  margin-left: auto;
+  position: absolute;
+    right: 12px;
+    top: 85px;
+    background-color: white;
+  color: black  !important;
+}
+.add-button:hover
+{
+  background-color: #72b8ac;
+  color: black;
 }
 button.mat-raised-button {
   position: absolute;

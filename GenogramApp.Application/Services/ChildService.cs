@@ -26,7 +26,7 @@ namespace GenogramApp.Application.Services
         }
         public async Task<IEnumerable<Child>> GetAllChildrenAsync()
         {
-            var children = await _unitOfWork.Child.GetAllAsync();
+            var children = _unitOfWork.Child.GetAll();
             return children;
         }
         public async Task<ChildDto> GetChildDetailsAsync(int id)

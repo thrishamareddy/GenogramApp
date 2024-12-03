@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Guardian } from '../../../core/models/guardian';
@@ -31,13 +31,15 @@ import { ActivatedRoute } from '@angular/router';
     CommonModule,
     MatMenuModule
   ],
-  
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './guardian-table.component.html',
   styleUrls: ['./guardian-table.component.scss']
 })
 export class GuardianTableComponent {
   @Input() guardians: Guardian[] = [];
   childId:any;
+  nodes:any[]=[]
+  links:any[]=[]
   displayedColumns: string[] = NameOf.those<Guardian>([
     'actions',
     'firstName',
@@ -132,36 +134,57 @@ export class GuardianTableComponent {
     
   }
   
-  viewGenogram() {
-    const nodes = this.guardians.map(g => ({
-      id: g.id.toString(),
-      label: `${g.firstName} ${g.lastName}`
+  viewGenogram(): void {
+    const padding = 30; 
+    const nodes = this.guardians.map(guardian => ({
+      id: guardian.id.toString(),
+      label: `${guardian.firstName} ${guardian.lastName}`,
+      dimension: {
+        width: this.calculateTextWidth(`${guardian.firstName} ${guardian.lastName}`) + padding,
+        height: 30,
+      },
+      icon:'user.svg'
     }));
+  
     const childId = this.childService.getChildId()?.toString();
-    const name = this.childService.getChildName();
-    if (childId) {
-      if (!nodes.some(node => node.id === childId)) {
+    const childName = this.childService.getChildName();
+    
+    if (childId&&childName) {
+      const isChildNodePresent = nodes.some(node => node.id === childId);
+      if (!isChildNodePresent) {
         nodes.push({
           id: childId,
-          label: `${name}`
+          label: childName,
+          dimension: {
+            width: this.calculateTextWidth(childName) + padding,
+            height: 30,
+          },
+          icon:'user.svg'
         });
       }
     } else {
-      console.warn('Child not found');
+      console.warn('Child not found in the system.');
     }
+  
     const links = this.getLinksForGenogram();
-    console.log('Nodes:', nodes);
-    console.log('Links:', links);
+  
     const dialogRef = this.dialog.open(GenogramComponent, {
-      width: '600px',
-      height: '600px',
+      panelClass: 'custom-dialog-container',
+      width: '80vw',
+      height: '80vh', 
       data: {
         nodes: nodes,
-        links: links
+        links: links,
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Genogram dialog closed with result:', result);
       }
     });
   }
-
+  
   getLinksForGenogram(): Edge[] {
     const links: Edge[] = [];
     const childId = this.childService.getChildId()?.toString();
@@ -211,4 +234,9 @@ export class GuardianTableComponent {
     );
     return foundRelationship ? foundRelationship.id : null;
   }
+  calculateTextWidth(text: string ): number {
+    const labelWidth=text.length*9;
+    return labelWidth;
+  
+   }
 }
