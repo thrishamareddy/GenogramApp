@@ -51,5 +51,16 @@ namespace GenogramApp.Application.Services
             await _unitOfWork.SaveAsync();
             return true;
         }
+        public async Task<bool> Delete(ChildDto childDto)
+        {
+            var child = _mapper.Map<Child>(childDto);
+            if (child != null)
+            {
+                _unitOfWork.Child.Remove(child);
+                await _unitOfWork.SaveAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

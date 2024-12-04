@@ -43,7 +43,7 @@ export class EditUserComponent {
       nationality: [data?.user?.nationality || '', Validators.required],
       language: [data?.user?.language || '', Validators.required],
       dateOfBirth: [data?.user?.dateOfBirth || '', Validators.required],
-      imagePath: [data?.user?.imagePath || 'public/noImage.jpg']
+      imagePath: [data?.user?.imagePath || 'noImage.jpg']
     });
 
     if (this.isEditMode && data?.user?.imagePath) {

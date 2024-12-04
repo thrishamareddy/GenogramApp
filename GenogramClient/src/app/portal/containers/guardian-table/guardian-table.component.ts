@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Guardian } from '../../../core/models/guardian';
@@ -17,7 +17,6 @@ import { ChildService } from '../../../core/services/child.service';
 import { ToastrService } from 'ngx-toastr';
 import { NameOf } from '../../../core/utilities/NameOf';
 import { ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-guardian-table',
   standalone: true,
@@ -38,8 +37,9 @@ import { ActivatedRoute } from '@angular/router';
 export class GuardianTableComponent {
   @Input() guardians: Guardian[] = [];
   childId:any;
-  nodes:any[]=[]
-  links:any[]=[]
+  nodes:any[]=[];
+  links:any[]=[];
+  isDisabled:Boolean=true;
   displayedColumns: string[] = NameOf.those<Guardian>([
     'actions',
     'firstName',
@@ -50,36 +50,42 @@ export class GuardianTableComponent {
     'isPrimaryContact',
     'remarks',
   ]);
-
   constructor(
     private toastr: ToastrService,
     private childService: ChildService,
     private dialog: MatDialog,
     private guardianService: GuardianService,
     private route:ActivatedRoute
-
   ) {  
     const childIdParam = this.route.snapshot.paramMap.get('childId');
     if (childIdParam !== null) {
       this.childId = +childIdParam||1;
     }
-
-
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['guardians']) {
+      this.checkDisabledState();
+      
+    }
   }
 
+  checkDisabledState(): void {
+    const childId = this.childService.getChildId();
+    this.isDisabled = !(this.guardians.length > 0 && childId);
+  }
   showRemarks(remarks: string): void {
     this.dialog.open(RemarksDialogComponent, {
       data: { remarks },
       width: '400px'
     });
   }
-
   deleteGuardian(contact: Guardian): void {
     const contactId=this.getIdByName(contact);
     this.guardianService.deleteGuardian(contactId).subscribe({
       next: (response: any) => {
         this.guardians = this.guardians.filter(g => g.id !== contactId); 
         this.toastr.success("Relation deleted successfully."); 
+        this.checkDisabledState();
       },
       error: (err) => {
         console.error("Error deleting guardian:", err);
@@ -87,18 +93,15 @@ export class GuardianTableComponent {
       }
     });
   }
-
   editGuardian(contact:any) {
     this.openAddGuardianDialog(contact);
   }
-
   openAddGuardianDialog(guardian1:any): void {
     console.log(guardian1);
     const dialogRef = this.dialog.open(AddGuardianComponent, {
       data: { guardian: guardian1,guardians:this.guardians,childId:this.childId },
       width: '600px',
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       debugger;
       if (result !== false) {
@@ -116,7 +119,6 @@ export class GuardianTableComponent {
           } else {
             this.guardians = [...this.guardians, { ...data }];
           }
-    
           if (data.id) {
             this.toastr.success('Relation Updated successfully');
           } else {
@@ -133,6 +135,7 @@ export class GuardianTableComponent {
   }
   
   viewGenogram(): void {
+    
     const padding = 30; 
     const nodes = this.guardians.map(guardian => ({
       id: guardian.id.toString(),

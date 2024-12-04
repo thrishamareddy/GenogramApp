@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -26,10 +27,11 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent implements OnInit {
+  
   children: any[] = [];
   tableView = false; 
-  displayedColumns: string[] = ['name', 'address','language','nationality', 'actions'];
-  constructor(private childService: ChildService, private router: Router,private dialog:MatDialog) {}
+  displayedColumns: string[] = ['name', 'address','language','nationality', 'dateOfBirth','actions'];
+  constructor(private toastr:ToastrService,private childService: ChildService, private router: Router,private dialog:MatDialog) {}
   ngOnInit(): void {
     debugger;
     this.childService.getAllChild().subscribe({
@@ -51,6 +53,7 @@ export class HomePageComponent implements OnInit {
     this.router.navigate([`${childId}`]);
   }
 
+
   addChild(): void {
     const dialogRef = this.dialog.open(EditUserComponent, {
       width: '600px', 
@@ -59,11 +62,18 @@ export class HomePageComponent implements OnInit {
     
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        result.id=0;
-        this.childService.addChild(result).subscribe((data)=>{
-          
-        })
+        result.id = 0;  
+        this.childService.addChild(result).subscribe((data) => {
+          this.children.push(result); 
+          window.location.reload();
+        });
       }
     });
+  }
+  
+  Delete(child: any) {
+    this.childService.Delete(child).subscribe((data)=>{
+      this.toastr.success("Child Deleted Successfully");
+    })
   }
 }

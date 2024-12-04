@@ -88,5 +88,23 @@ namespace GenogramApp.Api.Controllers
                 return StatusCode(500, new { message = "An error occurred while updating child." });
             }
         }
+        [HttpDelete("DeleteChild")]
+        public async Task<IActionResult> Delete(ChildDto childDto)
+        {
+            try
+            {
+                var isDeleted =await _childService.Delete(childDto);
+                if (isDeleted)
+                {
+                    return Ok(new { message = "Child Deleted successfully." });
+                    
+                }
+                return NotFound(new { message = "Child not found." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting child." });
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { format } from 'd3';
@@ -9,6 +9,7 @@ import { format } from 'd3';
   providedIn: 'root',
 })
 export class ChildService {
+ 
   private childId: number | null = null;
  private name:string |null=null;
   constructor(private http: HttpClient) {}
@@ -22,13 +23,21 @@ export class ChildService {
     return this.http.get(`${this.baseUrl}/${Id}`);
   }
   updateChild(child:User|null): Observable<any> {
-    debugger;
     return this.http.post(`${this.baseUrl}/EditChild`,child);
   }
   addChild(child:User|null):Observable<any>{
-    debugger;
     return this.http.post(`${this.baseUrl}/CreateChild`,child);
   }
+  Delete(child: any) {
+    debugger
+    const jsonChild = JSON.stringify(child); 
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      body: jsonChild
+    };
+    return this.http.delete(`${this.baseUrl}/DeleteChild`, options);
+  }
+  
   setChildId(id: number): void {
     this.childId = id;
   }

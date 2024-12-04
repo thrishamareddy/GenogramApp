@@ -12,6 +12,6 @@ namespace GenogramApp.Domain.Entities
         public string Language { get; set; } =null!;
         public string? DateOfBirth { get; set; }
         public string? ImagePath { get; set; }
-        public ICollection<Guardian> Guardians { get; set; } = null!;
+        public ICollection<Guardian>? Guardians { get; set; }
     }
 }

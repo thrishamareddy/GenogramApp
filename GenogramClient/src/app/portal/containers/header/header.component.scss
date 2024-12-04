@@ -5,16 +5,14 @@
     border: none;
     cursor: pointer;
     text-align: right;
+    margin-left: auto;
   }
   
   .header-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
     padding: 10px;
     background-color: #72b8ac;
-    border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.5s ease-in-out;
   }
@@ -24,4 +22,12 @@
     font-weight: bold;
     color: #333;
     margin: 0;
+  }
+  .logo {
+    width: 40px;
+    height: auto;
+    margin-right: 15px;
+  }
+  .mat-icon {
+    margin-top: -6px;
   }
