@@ -65,7 +65,6 @@ export class GuardianTableComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['guardians']) {
       this.checkDisabledState();
-      
     }
   }
 
@@ -135,7 +134,6 @@ export class GuardianTableComponent {
   }
   
   viewGenogram(): void {
-    
     const padding = 30; 
     const nodes = this.guardians.map(guardian => ({
       id: guardian.id.toString(),
@@ -144,7 +142,8 @@ export class GuardianTableComponent {
         width: this.calculateTextWidth(`${guardian.firstName} ${guardian.lastName}`) + padding,
         height: 30,
       },
-      icon:'user.svg'
+      icon:'user.svg',
+      rank:'level-1'
     }));
   
     const childId = this.childService.getChildId()?.toString();
@@ -160,7 +159,8 @@ export class GuardianTableComponent {
             width: this.calculateTextWidth(childName) + padding,
             height: 30,
           },
-          icon:'user.svg'
+          icon:'user.svg',
+          rank:`level-${childId}`
         });
       }
     } else {
@@ -195,11 +195,15 @@ export class GuardianTableComponent {
     }
     const guardians = this.guardians.filter((g) => g.relationship === 'Father' || g.relationship === 'Mother' || g.relationship === 'Brother' || g.relationship === 'Sister' || g.relationship === 'Grandmother' || g.relationship === 'Grandfather' || g.relationship === 'Guardian');
     guardians.forEach(guardian => {
+      const guardianId=guardian.id.toString();
+      const isAbove = ['Grandfather', 'Grandmother', 'Guardian'].includes(guardian.relationship);
+      const sourceId = isAbove ? guardianId: childId;
+      const targetId = isAbove ? childId : guardianId;
       links.push({
-        id: `link-${guardian.id}-${childId}`,
-        target: guardian.id.toString(),
-        source: childId,
-        label: guardian.relationship
+        id: `link-${guardianId}-${childId}`,
+        source: sourceId,
+        target: targetId,
+        label: guardian.relationship || 'Relation',
       });
     });
     const createLink = (sourceId: string, targetId: string, label: string) => {

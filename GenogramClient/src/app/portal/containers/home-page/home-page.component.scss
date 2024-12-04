@@ -6,15 +6,16 @@
 .header-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 10px;
   background: linear-gradient(135deg, #72b8ac, #5fa398);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  border-radius: 15px;
   animation: fadeIn 0.5s ease-in-out;
 }
-
+.mat-card{
+  width: 50% !important;
+  height: auto;
+}
 .genogram-title {
   font-size: 28px;
   font-weight: bold;
@@ -47,7 +48,12 @@ button:active {
 }
 
 .child-container {
-  margin-top: 30px;
+  max-width: 90%; 
+  margin: 0 auto; 
+  padding: 20px; 
+  background-color: #f9f9f9; 
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -62,33 +68,57 @@ button:active {
 
 .child-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Reduced card size */
-  gap: 15px; /* Reduced gap between cards */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
   padding: 0 20px;
   justify-items: center;
   align-items: center;
+  
 }
 
 .child-card {
   border: 1px solid #ddd;
   border-radius: 15px;
-  padding: 15px; 
+  padding: 15px;
   text-align: center;
   background-color: #fff;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0.3s;
   opacity: 0;
   animation: fadeInCard 0.5s forwards;
   width: 100%;
-  max-width: 240px; 
+  max-width: 240px;
   height: auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative; 
+  z-index: 1; 
+  &:hover{
+    transform: scale(1.1);
+  }
 }
 
 .child-card:hover {
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
-  transform: translateY(-10px);
+  box-shadow: 2px 8px 18px rgba(0, 0, 0, 0.3); /* Shadow effect on hover */
+  transform: translateY(-10px) scale(1.05); /* Scale to 1.05 and add slight translation for the hover effect */
 }
+
+.child-card:active {
+  transform: translateY(3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Slight shadow when clicked */
+}
+
+
+.child-card img {
+  width: 100%;
+  border-radius: 10px; 
+  transition: transform 0.3s ease;
+}
+
+.child-card h3, .child-card p {
+  margin: 10px 0;
+  transition: color 0.3s ease;
+}
+
 
 .child-card:active {
   transform: translateY(3px);
@@ -101,29 +131,25 @@ button:active {
   object-fit: cover;
   border-radius: 10px;
   transition: transform 0.3s ease;
+  
 }
 
-.child-image:hover {
-  transform: scale(1.1);
-}
 
 .child-info h4 {
   margin-top: 15px;
-  font-size: 18px; /* Adjusted text size */
+  font-size: 18px; 
   color: #333;
   font-weight: bold;
 }
 
 .add-button {
-  position: fixed;
-  right: 30px;
-  top: 100px;
+  right: -452px;
+  top: -51px;
   background-color: #72b8ac;
   color: white;
   padding: 15px 25px;
   font-size: 20px;
   border: none;
-  border-radius: 50%;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
@@ -138,8 +164,12 @@ button:active {
 }
 
 .table-container {
-  margin-top: 40px;
-  padding: 0 15px;
+  max-width: 90%; 
+  margin: 0 auto; 
+  padding: 20px; 
+  background-color: #f9f9f9; 
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -148,9 +178,11 @@ table {
   border-collapse: collapse;
   margin-top: 20px;
   animation: fadeInTable 0.5s ease-in-out;
+  border: 1px solid #ddd; 
 }
 
 table.mat-elevation-z8 {
+  box-shadow: none; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -171,13 +203,16 @@ td {
   background-color: #fff;
   color: #555;
 }
-
+.actions-button {
+  display: flex;
+  justify-content: center;
+  gap: 10px; 
+}
 button.mat-raised-button {
   margin-top: 5px;
-}
-
-mat-row:hover {
-  background-color: #f9f9f9;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 8px;
 }
 
 mat-header-row {
@@ -187,6 +222,11 @@ mat-header-row {
 
 mat-row {
   font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+mat-row:hover {
+  background-color: #f9f9f9;
 }
 
 @media (max-width: 1200px) {

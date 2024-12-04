@@ -24,9 +24,9 @@ this.dialogRef.close();
   name:any;
   layoutConfig = {  
     orientation:'TB',
-    edgePadding:50,
+    edgePadding:10,
     rankPadding:100,
-    nodePadding: 20
+    nodePadding: 10
   };
   
   curve: any = shape.curveLinear;

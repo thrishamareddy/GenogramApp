@@ -35,14 +35,14 @@
 
 .button-container {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  justify-content: space-between;
+  // gap: 10px;
   width: 100%;
   padding-top: 30px;
 }
 
 .button-container button {
-  padding: 12px 25px;
+  padding: 12px 20px;
   border-radius: 10px;
   font-size: 16px;
   text-transform: capitalize;
@@ -51,7 +51,7 @@
 }
 
 button[color="primary"] {
-  background-color: #66bcaa;
+  background-color: #5ea69a;
   color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

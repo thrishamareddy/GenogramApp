@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { MatCard } from '@angular/material/card';
 @Component({
   selector: 'app-home-page',
   standalone: true,
@@ -21,7 +22,8 @@ import { ToastrService } from 'ngx-toastr';
     MatIconModule,
     FormsModule,
     CommonModule,
-    MatTableModule
+    MatTableModule,
+    MatCard
     ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'

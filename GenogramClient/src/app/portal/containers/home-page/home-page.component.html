@@ -1,3 +1,4 @@
+
 <div class="header-container">
   <h5 class="genogram-title">ChildCare</h5>
   <button mat-raised-button color="accent" (click)="toggleView()">
@@ -5,35 +6,35 @@
   </button>
 </div>
 
-<div class="parent-card-container">
-  <!-- Card View -->
   <div class="child-container" *ngIf="!tableView" [@viewTransition]>
     <div class="children-display">
       <h4>Children Details</h4>
-      <button mat-raised-button color="primary" (click)="addChild()" class="add-button">
+      <button mata-raised-button color="primary" (click)="addChild()" class="add-button">
         <mat-icon>add_circle</mat-icon>Add
       </button>
       <div class="child-grid">
-        <div *ngFor="let child of children" class="child-card" (click)="navigateToChild(child.id)">
-          <img [src]="child.imagePath" alt="Child Image" class="child-image" />
-          <div class="child-info">
-            <h4>{{ child.name }}</h4>
+        <mat-card *ngFor="let child of children" class="child-card" (click)="navigateToChild(child.id)">
+          <div>
+            <img [src]="child.imagePath" alt="Child Image" class="child-image" />
+             <div class="child-info">
+                <h4>{{ child.name }}</h4>
+              </div>
           </div>
-        </div>
+          
+        </mat-card>
       </div>
     </div>
   </div>
 
-  <!-- Table View -->
   <div class="table-container" *ngIf="tableView" [@viewTransition]>
     <h3>Children Details</h3>
-    <button mat-raised-button color="primary" (click)="addChild()">Add</button>
+    <button mat-raised-button color="primary" (click)="addChild()"><mat-icon>add_circle</mat-icon>Add</button>
     <table mat-table [dataSource]="children" class="mat-elevation-z8">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let child">{{ child.name }}</td>
       </ng-container>
-
+      
       <ng-container matColumnDef="address">
         <th mat-header-cell *matHeaderCellDef>Address</th>
         <td mat-cell *matCellDef="let child">{{ child.address }}</td>
@@ -65,4 +66,3 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-</div>
