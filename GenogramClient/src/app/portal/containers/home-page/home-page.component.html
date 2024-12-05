@@ -8,7 +8,7 @@
 
   <div class="child-container" *ngIf="!tableView" [@viewTransition]>
     <div class="children-display">
-      <h4>Children Details</h4>
+      <h4 class="child-info">Children Details</h4>
       <button mata-raised-button color="primary" (click)="addChild()" class="add-button">
         <mat-icon>add_circle</mat-icon>Add
       </button>
@@ -20,7 +20,6 @@
                 <h4>{{ child.name }}</h4>
               </div>
           </div>
-          
         </mat-card>
       </div>
     </div>

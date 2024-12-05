@@ -38,7 +38,7 @@ export class EditUserComponent {
 
     this.editForm = this.fb.group({
       id: [data?.user?.id || null],
-      name: [data?.user?.name || '', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/)]],
+      name: [data?.user?.name || '', [Validators.required, Validators.pattern(/^[a-zA-Z ]+$/), Validators.minLength(3)]],
       address: [data?.user?.address || '', Validators.required],
       nationality: [data?.user?.nationality || '', Validators.required],
       language: [data?.user?.language || '', Validators.required],
@@ -53,6 +53,7 @@ export class EditUserComponent {
 
   onSave(): void {
     if (this.editForm.valid) {
+      debugger
       const action = this.isEditMode ? 'updated' : 'added';
       this.dialogRef.close(this.editForm.value);
       this.toastr.success(`User ${action} successfully.`);
@@ -62,7 +63,10 @@ export class EditUserComponent {
   onCancel(): void {
     this.dialogRef.close(null);
   }
-
+  removeImage(): void {
+    this.profileImage = null;
+    this.editForm.patchValue({ imagePath:  'noImage.jpg' }); 
+  }
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {

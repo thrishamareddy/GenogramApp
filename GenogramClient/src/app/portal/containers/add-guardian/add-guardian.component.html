@@ -14,6 +14,9 @@
           <mat-error *ngIf="guardianForm.get('firstName')?.hasError('pattern')">
             Invalid First Name
           </mat-error>
+          <mat-error *ngIf="guardianForm.get('firstName')?.hasError('minlength')">
+            Atleast 3 characters are required.
+          </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Last Name</mat-label>
@@ -49,15 +52,15 @@
             Phone number is required.
           </mat-error>
           <mat-error *ngIf="guardianForm.get('phone')?.hasError('pattern')">
-            Invalid phone number. Please enter a valid number.
+            Invalid phone number.
           </mat-error>
         </mat-form-field>
         
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" />
-          <mat-error *ngIf="guardianForm.get('email')?.hasError('email')">
-            Please enter a valid email address.
+          <mat-error *ngIf="guardianForm.get('email')?.hasError('pattern')">
+            Invalid email format.
           </mat-error>
         </mat-form-field>
         

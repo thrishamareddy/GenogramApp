@@ -14,8 +14,10 @@
           <mat-error *ngIf="editForm.get('name')?.hasError('pattern')">
             Invalid Name.
           </mat-error>
+          <mat-error *ngIf="editForm.get('name')?.hasError('minlength')">
+            Name must be at least 3 characters long.
+          </mat-error>
         </mat-form-field>
-
         <mat-form-field appearance="outline" class="form-field w-100">
           <mat-label>Address</mat-label>
           <input matInput formControlName="address" />
@@ -26,9 +28,24 @@
         <br>
         <div class="form-group">
           <label>Profile Image</label>
-          <input type="file" (change)="onFileSelected($event)" class="form-control"/>
+          <input
+            *ngIf="!profileImage"
+            type="file"
+            (change)="onFileSelected($event)"
+            class="form-control"
+          />
+
           <div class="image-preview" *ngIf="profileImage">
-            <img [src]="profileImage" alt="Profile Image" style="max-width: 100%; max-height: 150px;" />
+            <div class="image-container">
+              <img [src]="profileImage" alt="Profile Image" />
+              <button
+                type="button"
+                class="remove-image-btn"
+                (click)="removeImage()"
+              >
+                ✖
+              </button>
+            </div>
           </div>
         </div>
       </div>

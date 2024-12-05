@@ -49,7 +49,10 @@
   transition: all 0.3s ease;
   width: 45%;
 }
-
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 30px; 
+}
 button[color="primary"] {
   background-color: #5ea69a;
   color: white;

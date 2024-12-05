@@ -14,9 +14,24 @@ import { MatIconModule } from '@angular/material/icon';
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ] 
 })
 export class GenogramComponent {
-closeGenogram() {
-this.dialogRef.close();
-}
+  constructor(
+    private childService:ChildService,
+    public dialogRef: MatDialogRef<GenogramComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { nodes: Node[]; links: Edge[] }
+  ) {
+    this.nodes = data.nodes; 
+    this.links = data.links;
+    this.name=this.childService.getChildName();
+    window.addEventListener('resize', () => this.adjustGraphPosition());
+  }
+  curve: any = shape.curveLinear;
+  graphWidth: number = window.innerWidth;
+  graphHeight: number = window.innerHeight;
+  calculateNodeWidth(label: string): number {
+    const baseWidth = 60;
+    const labelWidth = label.length * 8; 
+    return baseWidth + labelWidth;
+  }
   nodes: Node[] = [];
   links: Edge[] = [];
   width = window.innerWidth;
@@ -28,16 +43,6 @@ this.dialogRef.close();
     rankPadding:100,
     nodePadding: 10
   };
-  
-  curve: any = shape.curveLinear;
-  graphWidth: number = window.innerWidth;
-  graphHeight: number = window.innerHeight;
-  calculateNodeWidth(label: string): number {
-    const baseWidth = 60;
-    const labelWidth = label.length * 8; 
-    return baseWidth + labelWidth;
-  }
-  
   onNodeClick(node: any): void {
     console.log('Node clicked:', node);
   }
@@ -49,16 +54,27 @@ this.dialogRef.close();
     this.width = window.innerWidth;
     this.height = window.innerHeight;
   }
+  closeGenogram() {
+    this.dialogRef.close();
+    }
   
-  constructor(
-    private childService:ChildService,
-    public dialogRef: MatDialogRef<GenogramComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { nodes: Node[]; links: Edge[] }
-  ) {
-    this.nodes = data.nodes; 
-    this.links = data.links;
-    this.name=this.childService.getChildName();
+  adjustGraphPosition(): void {
+    const container = document.querySelector('.chart-container') as HTMLElement;
+    const graph = container.querySelector('svg') as SVGElement;
+  
+    if (container && graph) {
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+  
+      const graphWidth = graph.getBoundingClientRect().width;
+      const graphHeight = graph.getBoundingClientRect().height;
+  
+      const xOffset = (containerWidth - graphWidth) / 2;
+      const yOffset = (containerHeight - graphHeight) / 2;
+      graph.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+    }
   }
+  
   
 }
 

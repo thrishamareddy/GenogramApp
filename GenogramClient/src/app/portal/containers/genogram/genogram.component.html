@@ -3,45 +3,31 @@
 <div class="chart-container" #genogramContainer>
   <ngx-graph
     [layout]="'dagreCluster'"
-    [view]="[2000, 2000]"
+    [view]="[width, height]"
     [links]="links"
     [nodes]="nodes"
     [layoutSettings]="layoutConfig"
+    (resize)="onResize($event)"
     class="genogram-graph">
 
     <ng-template #defsTemplate>
-      <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+      <svg:marker id="arrow-forward" viewBox="0 -5 10 10" refX="10" refY="0" markerWidth="4" markerHeight="4" orient="auto">
         <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
       </svg:marker>
-    </ng-template>
-
-    <ng-template #clusterTemplate let-cluster>
-      <svg:g class="node cluster">
-        <svg:rect
-          rx="5"
-          ry="5"
-          [attr.width]="cluster.dimension.width"
-          [attr.height]="cluster.dimension.height"
-          [attr.fill]="cluster.data.color"
-          class="cluster-rect"
-        />
-        <svg:text [attr.x]="cluster.dimension.width / 2" [attr.y]="cluster.dimension.height / 2" text-anchor="middle" class="cluster-text">
-          {{ cluster.label }}
-        </svg:text>
-      </svg:g>
+      <svg:marker id="arrow-reverse" viewBox="0 -5 10 10" refX="0" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+        <svg:path d="M10,-5L0,0L10,5" class="arrow-head" />
+      </svg:marker>
     </ng-template>
 
     <ng-template #nodeTemplate let-node>
       <svg:g class="node">
-        <rect [attr.width]="node.dimension?.width"
-              [attr.height]="node.dimension?.height || 60"
+        <rect [attr.width]="node.dimension.width"
+              [attr.height]="node.dimension.height || 60"
               [attr.fill]="node.id === '1' ? '#79aab2' : '#b0dedb'"
               rx="5" ry="5"
               stroke="#000000"
-              stroke-width="1"
-              >
+              stroke-width="1">
         </rect>
-   
         <svg:image
           *ngIf="node.icon"
           [attr.href]="node.icon"
@@ -49,22 +35,27 @@
           [attr.y]="5"
           [attr.width]="node.imageWidth || 20"
           [attr.height]="node.imageHeight || 20"
-          [attr.preserveAspectRatio]="'xMidYMid meet'"
-          class="node-image"
-        ></svg:image>
-
-   
-      <svg:text alignment-baseline="central" [attr.x]="30" [attr.y]="node.dimension.height / 2">
-        {{ node.label }}
-      </svg:text>
- 
+          preserveAspectRatio="xMidYMid meet"
+          class="node-image">
+        </svg:image>
+        <svg:text alignment-baseline="central"
+                  [attr.x]="30"
+                  [attr.y]="node.dimension.height / 2"
+                  fill="#333">
+          {{ node.label }}
+        </svg:text>
       </svg:g>
- 
     </ng-template>
+    
 
     <ng-template #linkTemplate let-link>
-      <svg:g class="edge" (mouseenter)="onLinkHover(link)" (mouseleave)="onLinkHover(null)">
-        <svg:path class="line" [attr.stroke]="link.color || '#000'" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+      <svg:g class="edge">
+        <svg:path class="line"
+                  [attr.stroke]="link.primary ? '#007acc' : '#666'"
+                  stroke-width="2"
+                  [attr.marker-end]="!link.reverseArrow ? 'url(#arrow-forward)' : null"
+                  [attr.marker-start]="link.reverseArrow ? 'url(#arrow-reverse)' : null">
+        </svg:path>
         <svg:text class="edge-label" text-anchor="middle" [attr.fill]="link.color || '#000'">
           <textPath
             class="text-path"

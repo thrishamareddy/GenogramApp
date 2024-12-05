@@ -33,10 +33,10 @@ export class AddGuardianComponent {
   ) {
     this.guardianForm = this.fb.group({
       id:[''],
-      firstName: ['',[Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      firstName: ['',[Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/),Validators.minLength(3)]],
       lastName: ['',[Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       relationship: ['', Validators.required],
-      email: ['', [Validators.email,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
+      email: ['', [Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
       phone: ['',[Validators.required,Validators.pattern(/^[+]?[0-9]{10,15}$/)]],
       isPrimaryContact: [false],
       remarks: [''],

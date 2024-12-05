@@ -17,6 +17,7 @@ import { ChildService } from '../../../core/services/child.service';
 import { ToastrService } from 'ngx-toastr';
 import { NameOf } from '../../../core/utilities/NameOf';
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-guardian-table',
   standalone: true,
@@ -25,8 +26,8 @@ import { ActivatedRoute } from '@angular/router';
     MatCheckboxModule,
     MatIconModule,
     MatTableModule,
-    MatDialogModule, 
-    ReactiveFormsModule, 
+    MatDialogModule,
+    ReactiveFormsModule,
     CommonModule,
     MatMenuModule
   ],
@@ -36,10 +37,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GuardianTableComponent {
   @Input() guardians: Guardian[] = [];
-  childId:any;
-  nodes:any[]=[];
-  links:any[]=[];
-  isDisabled:Boolean=true;
+  childId: any;
+  isDisabled: boolean = true;
+
   displayedColumns: string[] = NameOf.those<Guardian>([
     'actions',
     'firstName',
@@ -50,18 +50,18 @@ export class GuardianTableComponent {
     'isPrimaryContact',
     'remarks',
   ]);
+
   constructor(
     private toastr: ToastrService,
     private childService: ChildService,
     private dialog: MatDialog,
     private guardianService: GuardianService,
-    private route:ActivatedRoute
-  ) {  
+    private route: ActivatedRoute
+  ) {
     const childIdParam = this.route.snapshot.paramMap.get('childId');
-    if (childIdParam !== null) {
-      this.childId = +childIdParam||1;
-    }
+    this.childId = childIdParam ? +childIdParam : null;
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['guardians']) {
       this.checkDisabledState();
@@ -72,18 +72,20 @@ export class GuardianTableComponent {
     const childId = this.childService.getChildId();
     this.isDisabled = !(this.guardians.length > 0 && childId);
   }
+
   showRemarks(remarks: string): void {
     this.dialog.open(RemarksDialogComponent, {
       data: { remarks },
       width: '400px'
     });
   }
+
   deleteGuardian(contact: Guardian): void {
-    const contactId=this.getIdByName(contact);
+    const contactId = this.getIdByName(contact);
     this.guardianService.deleteGuardian(contactId).subscribe({
-      next: (response: any) => {
-        this.guardians = this.guardians.filter(g => g.id !== contactId); 
-        this.toastr.success("Relation deleted successfully."); 
+      next: () => {
+        this.guardians = this.guardians.filter(g => g.id !== contactId);
+        this.toastr.success("Relation deleted successfully.");
         this.checkDisabledState();
       },
       error: (err) => {
@@ -92,20 +94,21 @@ export class GuardianTableComponent {
       }
     });
   }
-  editGuardian(contact:any) {
+
+  editGuardian(contact: any): void {
     this.openAddGuardianDialog(contact);
   }
-  openAddGuardianDialog(guardian1:any): void {
-    console.log(guardian1);
+
+  openAddGuardianDialog(guardian: any): void {
     const dialogRef = this.dialog.open(AddGuardianComponent, {
-      data: { guardian: guardian1,guardians:this.guardians,childId:this.childId },
+      data: { guardian, guardians: this.guardians, childId: this.childId },
       width: '600px',
     });
+
     dialogRef.afterClosed().subscribe((result) => {
-      debugger;
       if (result !== false) {
         this.guardianService.addOrUpdateGuardian(result.id, result).subscribe((data) => {
-          if (data.isPrimaryContact === true) {
+          if (data.isPrimaryContact) {
             this.guardians = this.guardians.map((guardian) => ({
               ...guardian,
               isPrimaryContact: false
@@ -117,24 +120,18 @@ export class GuardianTableComponent {
             );
           } else {
             this.guardians = [...this.guardians, { ...data }];
-          }
-          if (data.id) {
-            this.toastr.success('Relation Updated successfully');
-          } else {
-            this.toastr.success('Relation Created successfully');
             setTimeout(() => {
-              location.reload(); 
+              window.location.reload();
             }, 2000);
           }
-          
+          this.toastr.success(data.id ? 'Relation Updated successfully' : 'Relation Created successfully');
         });
       }
     });
-    
   }
-  
+
   viewGenogram(): void {
-    const padding = 30; 
+    const padding = 30;
     const nodes = this.guardians.map(guardian => ({
       id: guardian.id.toString(),
       label: `${guardian.firstName} ${guardian.lastName}`,
@@ -142,14 +139,29 @@ export class GuardianTableComponent {
         width: this.calculateTextWidth(`${guardian.firstName} ${guardian.lastName}`) + padding,
         height: 30,
       },
-      icon:'user.svg',
-      rank:'level-1'
+      icon: guardian.isPrimaryContact
+        ? 'primary.png'
+        : 'user.svg',
+      rank: 'second',
     }));
+  
+    this.guardians.sort((a, b) => {
+      const priorityOrder: { [key: string]: number } = {
+        mother: 1,
+        sister: 2,
+        brother: 3,
+        father: 4,
+      };
+      const priorityA = priorityOrder[a.relationship.toLowerCase()] || 99;
+      const priorityB = priorityOrder[b.relationship.toLowerCase()] || 99;
+  
+      return priorityA - priorityB;
+    });
   
     const childId = this.childService.getChildId()?.toString();
     const childName = this.childService.getChildName();
-    
-    if (childId&&childName) {
+  
+    if (childId && childName) {
       const isChildNodePresent = nodes.some(node => node.id === childId);
       if (!isChildNodePresent) {
         nodes.push({
@@ -159,23 +171,25 @@ export class GuardianTableComponent {
             width: this.calculateTextWidth(childName) + padding,
             height: 30,
           },
-          icon:'user.svg',
-          rank:`level-${childId}`
+          icon: 'user.svg',
+          rank: `level-${childId}`,
         });
       }
     } else {
       console.warn('Child not found in the system.');
     }
   
-    const links = this.getLinksForGenogram();
+    const links = this.getLinksForGenogram(childId);
   
     const dialogRef = this.dialog.open(GenogramComponent, {
       panelClass: 'custom-dialog-container',
       width: '80vw',
-      height: '80vh', 
+      height: '80vh',
       data: {
         nodes: nodes,
         links: links,
+        childName: childName,
+        relationships: this.guardians, 
       },
     });
   
@@ -186,26 +200,34 @@ export class GuardianTableComponent {
     });
   }
   
-  getLinksForGenogram(): Edge[] {
-    const links: Edge[] = [];
-    const childId = this.childService.getChildId()?.toString();
-    if (!childId) {
-      console.warn('No child ID found. Please ensure a valid child ID is available.');
-      return links;
-    }
-    const guardians = this.guardians.filter((g) => g.relationship === 'Father' || g.relationship === 'Mother' || g.relationship === 'Brother' || g.relationship === 'Sister' || g.relationship === 'Grandmother' || g.relationship === 'Grandfather' || g.relationship === 'Guardian');
+  
+  getLinksForGenogram(childId: any): any[] {
+    const links: any[] = [];
+    const existingLinks = new Set<string>();
+    const guardians = this.guardians.filter(g =>
+      ['father', 'mother', 'brother', 'sister', 'grandmother', 'grandfather', 'guardian'].includes(
+        g.relationship.toLowerCase()
+      )
+    );
+  
     guardians.forEach(guardian => {
-      const guardianId=guardian.id.toString();
-      const isAbove = ['Grandfather', 'Grandmother', 'Guardian'].includes(guardian.relationship);
-      const sourceId = isAbove ? guardianId: childId;
+      const guardianId = guardian.id.toString();
+      const isAbove = ['grandfather', 'grandmother', 'guardian'].includes(guardian.relationship.toLowerCase());
+      const sourceId = isAbove ? guardianId : childId;
       const targetId = isAbove ? childId : guardianId;
+  
       links.push({
         id: `link-${guardianId}-${childId}`,
         source: sourceId,
         target: targetId,
-        label: guardian.relationship || 'Relation',
+        label: guardian.isPrimaryContact
+          ? `${guardian.relationship} (P)`
+          : guardian.relationship || 'Relation',
+        reverseArrow: isAbove,
+        primary: guardian.isPrimaryContact,
       });
     });
+  
     const createLink = (sourceId: string, targetId: string, label: string) => {
       const linkKey = [sourceId, targetId].sort().join('-');
       if (!existingLinks.has(linkKey)) {
@@ -214,34 +236,43 @@ export class GuardianTableComponent {
           id: `link-${sourceId}-${targetId}`,
           source: sourceId,
           target: targetId,
-          label
+          label,
         });
       }
     };
-    const parents = this.guardians.filter(g => g.relationship === 'Mother' || g.relationship === 'Father');
-    const siblings = this.guardians.filter(g => g.relationship === 'Sister' || g.relationship === 'Brother');
-    const existingLinks = new Set<string>();
+  
+    const parents = this.guardians.filter(g =>
+      ['mother', 'father'].includes(g.relationship.toLowerCase())
+    );
+    const siblings = this.guardians.filter(g =>
+      ['sister', 'brother'].includes(g.relationship.toLowerCase())
+    );
+  
     siblings.forEach(sibling => {
+      const siblingId = sibling.id.toString();
       parents.forEach(parent => {
-        createLink(sibling.id.toString(), parent.id.toString(), parent.relationship);
+        createLink(siblingId, parent.id.toString(), parent.relationship);
       });
     });
+  
     return links;
   }
-  getIdByName(relationship: Guardian): number|null  {
-    const foundRelationship = this.guardians.find(
-      rel =>
-        rel.firstName === relationship.firstName &&
-        rel.lastName === relationship.lastName &&
-        rel.relationship === relationship.relationship &&
-        rel.phone === relationship.phone &&
-        rel.email === relationship.email
-    );
-    return foundRelationship ? foundRelationship.id : null;
-  }
-  calculateTextWidth(text: string ): number {
-    const labelWidth=text.length*9;
-    return labelWidth;
   
-   }
+  
+  
+  getIdByName(relationship: Guardian): number | null {
+    const found = this.guardians.find(
+      g =>
+        g.firstName === relationship.firstName &&
+        g.lastName === relationship.lastName &&
+        g.relationship === relationship.relationship &&
+        g.phone === relationship.phone &&
+        g.email === relationship.email
+    );
+    return found ? found.id : null;
+  }
+
+  calculateTextWidth(text: string): number {
+    return text.length * 9;
+  }
 }
