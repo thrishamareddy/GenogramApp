@@ -1,15 +1,29 @@
-<h5 class="chart-title">{{ name }}</h5>
+<h5 class="chart-title">Genogram - {{ name }}</h5>
 <mat-icon class="close-icon" (click)="closeGenogram()">close</mat-icon>
-<div class="chart-container" #genogramContainer>
+<div class="legend-container">
+  <div class="legend-items">
+    <div class="legend-item">
+      <div class="legend-icon child"></div>
+      <span>Child</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon primary"></div>
+      <span>Primary Contact</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon relation"></div>
+      <span>Relations</span>
+    </div>
+  </div>
+</div>
   <ngx-graph
     [layout]="'dagreCluster'"
-    [view]="[width, height]"
+    [view]="[900, 1000]"
     [links]="links"
     [nodes]="nodes"
     [layoutSettings]="layoutConfig"
-    (resize)="onResize($event)"
     class="genogram-graph">
-
+    
     <ng-template #defsTemplate>
       <svg:marker id="arrow-forward" viewBox="0 -5 10 10" refX="10" refY="0" markerWidth="4" markerHeight="4" orient="auto">
         <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
@@ -23,7 +37,8 @@
       <svg:g class="node">
         <rect [attr.width]="node.dimension.width"
               [attr.height]="node.dimension.height || 60"
-              [attr.fill]="node.id === '1' ? '#79aab2' : '#b0dedb'"
+              [attr.fill]="node.icon === 'primary.png'? '#e08e8e' : node.rank=='second' ? '#F4EDDB' : '#006a6a' "
+              
               rx="5" ry="5"
               stroke="#000000"
               stroke-width="1">
@@ -41,7 +56,8 @@
         <svg:text alignment-baseline="central"
                   [attr.x]="30"
                   [attr.y]="node.dimension.height / 2"
-                  fill="#333">
+                  [attr.fill]="node.rank=='second'?'#000000':'#F4EDDB'"
+                  >
           {{ node.label }}
         </svg:text>
       </svg:g>
@@ -49,6 +65,7 @@
     
 
     <ng-template #linkTemplate let-link>
+      
       <svg:g class="edge">
         <svg:path class="line"
                   [attr.stroke]="link.primary ? '#007acc' : '#666'"
@@ -68,4 +85,3 @@
       </svg:g>
     </ng-template>
   </ngx-graph>
-</div>

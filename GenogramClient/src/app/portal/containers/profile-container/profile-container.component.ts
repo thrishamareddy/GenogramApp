@@ -28,7 +28,6 @@ export class ProfileContainerComponent implements OnInit {
     const childId = this.route.snapshot.paramMap.get('childId')|| '1';
     const Id = parseInt(childId, 10); 
     this.childService.setChildId(Id);
-    debugger;
     this.childService.getChildDetails(Id).subscribe({
       next: (data) => {
         this.user = data;

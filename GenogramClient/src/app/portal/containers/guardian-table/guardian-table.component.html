@@ -1,65 +1,90 @@
-<mat-card class="contacts-card">
+<mat-card>
   <div class="button-container">
-    <button mat-raised-button color="primary" (click)="openAddGuardianDialog(null)"><mat-icon>add_circle</mat-icon> Add Guardian</button>
-    <button mat-raised-button color="accent" (click)="viewGenogram()" [disabled]="isDisabled==true"><mat-icon>visibility</mat-icon><span style="padding: 5px;">View Genogram</span></button>
-</div>
+    <button class="add-btnn" mat-raised-button  (click)="openAddGuardianDialog(null)">
+      <mat-icon>add_circle</mat-icon> Add Guardian
+    </button>
+    <button 
+  class="genogram-btnn" 
+  mat-raised-button 
+  color="accent" 
+  (click)="viewGenogram()" 
+  [disabled]="isDisabled == true" 
+  [ngClass]="{'disabled-btn': isDisabled == true}">
+  <mat-icon>visibility</mat-icon>
+  <span style="padding: 5px;">View Genogram</span>
+</button>
 
-<table mat-table [dataSource]="guardians" class="mat-elevation-z8">
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
+  </div>
+  
+  <div class="table-actions">
+    <mat-form-field appearance="outline" class="mat-search">
+      <mat-icon style="padding-right:0;" matPrefix >search</mat-icon>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search" class="search">
+    </mat-form-field>
+  </div>
+  
+  
+  <div class="table-block">
+    <mat-table [dataSource]="dataSource" matSort class="table-container mat-elevation-z8">
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
         <td mat-cell *matCellDef="let contact">
-          <button
-            mat-icon-button
-            [matMenuTriggerFor]="menu"
-            aria-label="Actions Menu"
-            class="plain-button"
-          >
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions Menu" class="plain-button">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="editGuardian(contact)">
-              <mat-icon>edit</mat-icon>
-              <span>Edit</span>
+              <mat-icon ><div class="edit-guardian">edit</div></mat-icon>
+              <span class="edit-guardian">Edit</span>
             </button>
             <button mat-menu-item (click)="deleteGuardian(contact)">
-              <mat-icon>delete</mat-icon>
-              <span>Delete</span>
+              <mat-icon color="warn">delete</mat-icon>
+              <span class="delete-guardian">Delete</span>
             </button>
           </mat-menu>
         </td>
       </ng-container>
+    
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+        <td mat-cell *matCellDef="let contact">
+          <a class="link-button" (click)="editGuardian(contact)">
+            {{ contact.firstName }}
+          </a>
+        </td>
+      </ng-container>
       
-      
-    <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef> First Name </th>
-        <td mat-cell *matCellDef="let contact"><a (click)="editGuardian(contact)" class="name" style="text-decoration: none;"> {{ contact.firstName }}</a></td>
-    </ng-container>
-    <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+    
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
         <td mat-cell *matCellDef="let contact">{{ contact.lastName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="relationship">
-        <th mat-header-cell *matHeaderCellDef> Relation to Child </th>
+      </ng-container>
+      <ng-container matColumnDef="relationship">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Relationship</th>
         <td mat-cell *matCellDef="let contact">{{ contact.relationship }}</td>
-    </ng-container>
-    <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef> Phone </th>
-        <td mat-cell *matCellDef="let contact">{{ contact.phone || '-' }}</td>
-    </ng-container>
-    <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let contact">{{ contact.email || '-' }}</td>
-    </ng-container>
-    <ng-container matColumnDef="isPrimaryContact">
-        <th mat-header-cell *matHeaderCellDef> Primary Contact </th>
+      </ng-container>
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+        <td mat-cell *matCellDef="let contact">{{ contact.phone }}</td>
+      </ng-container>
+    
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let contact">{{ contact.email }}</td>
+      </ng-container>
+    
+      <ng-container matColumnDef="isPrimaryContact">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Primary Contact</th>
         <td mat-cell *matCellDef="let contact">
           <div class="primary-contact-box" *ngIf="contact.isPrimaryContact">
             <mat-icon color="primary">check</mat-icon>
           </div>
         </td>
       </ng-container>
+    
       <ng-container matColumnDef="remarks">
-        <th mat-header-cell *matHeaderCellDef> Remarks </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks</th>
         <td mat-cell *matCellDef="let contact">
           <mat-icon 
             *ngIf="contact.remarks" 
@@ -69,7 +94,12 @@
           </mat-icon>
         </td>
       </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </mat-table>
+    
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
 </mat-card>

@@ -11,9 +11,12 @@
 
 .chart-title {
   font-size: 1.5rem;
-  color: #333;
-  background-color: #64c2b1;
+  color: #F4EDDB !important;
+    background: #006a6a;
   margin-bottom: 10px;
+}
+.regular-line {
+  stroke: #ff5722; /* Secondary color */
 }
 
 .node-rect {
@@ -114,7 +117,7 @@ ngx-graph {
   padding-top: 20px;
   height: 80vh; 
   width: 100%;
-  overflow: auto; 
+  // overflow: auto; 
   border: 1px solid #ccc;
 }
 
@@ -210,4 +213,62 @@ ngx-graph {
   right: 22px;
   top: 14px;
   cursor: pointer;
+}
+.legend-container {
+  margin: 20px auto;
+  padding: 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-in-out;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  top: 46px;
+  width: 187px;
+
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-between;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.3s ease;
+}
+
+.legend-item:hover {
+  transform: scale(1.1);
+}
+
+.legend-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.legend-icon.child {
+  background-color: #006a6a;
+}
+
+.legend-icon.primary {
+  background-color: #e08e8e;
+}
+
+.legend-icon.relation {
+  background-color:  #F4EDDB;
+}
+
+@media (max-width:768px) {
+  .legend-container{
+    display: none;
+  }
 }

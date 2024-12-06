@@ -1,35 +1,27 @@
-import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Component, Input, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Guardian } from '../../../core/models/guardian';
 import { AddGuardianComponent } from '../add-guardian/add-guardian.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
 import { GenogramComponent } from '../genogram/genogram.component';
-import { MatMenuModule } from '@angular/material/menu';
 import { GuardianService } from '../../../core/services/guardian.service';
 import { RemarksDialogComponent } from '../remarks-dialog/remarks-dialog.component';
-import { Edge } from '@swimlane/ngx-graph';
 import { ChildService } from '../../../core/services/child.service';
 import { ToastrService } from 'ngx-toastr';
 import { NameOf } from '../../../core/utilities/NameOf';
 import { ActivatedRoute } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import Swal from 'sweetalert2';
+import { MaterialModule } from '../../../core/material/material.module';
 
 @Component({
   selector: 'app-guardian-table',
   standalone: true,
   imports: [
-    MatCardModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatTableModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatMenuModule
+    MaterialModule,
+    MatPaginator,
+    MatSortModule
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './guardian-table.component.html',
@@ -37,9 +29,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GuardianTableComponent {
   @Input() guardians: Guardian[] = [];
+  dataSource = new MatTableDataSource<Guardian>([]);
   childId: any;
   isDisabled: boolean = true;
-
+  @ViewChild(MatPaginator) paginator!:MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = NameOf.those<Guardian>([
     'actions',
     'firstName',
@@ -60,14 +54,24 @@ export class GuardianTableComponent {
   ) {
     const childIdParam = this.route.snapshot.paramMap.get('childId');
     this.childId = childIdParam ? +childIdParam : null;
+    this.dataSource = new MatTableDataSource(this.guardians);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['guardians']) {
+      this.dataSource.data = this.guardians;
       this.checkDisabledState();
     }
   }
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
   checkDisabledState(): void {
     const childId = this.childService.getChildId();
     this.isDisabled = !(this.guardians.length > 0 && childId);
@@ -81,19 +85,42 @@ export class GuardianTableComponent {
   }
 
   deleteGuardian(contact: Guardian): void {
-    const contactId = this.getIdByName(contact);
-    this.guardianService.deleteGuardian(contactId).subscribe({
-      next: () => {
-        this.guardians = this.guardians.filter(g => g.id !== contactId);
-        this.toastr.success("Relation deleted successfully.");
-        this.checkDisabledState();
-      },
-      error: (err) => {
-        console.error("Error deleting guardian:", err);
-        this.toastr.error(err?.error?.message || "Failed to delete guardian. Please try again.");
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#006a6a',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Proceed with the delete operation if confirmed
+        const contactId = this.getIdByName(contact);
+        this.guardianService.deleteGuardian(contactId).subscribe({
+          next: () => {
+            this.guardians = this.guardians.filter(g => g.id !== contactId);
+            this.dataSource.data = [...this.guardians];
+            this.toastr.success("Relation deleted successfully.");
+            this.checkDisabledState();
+          },
+          error: (err) => {
+            console.error("Error deleting guardian:", err);
+            this.toastr.error(err?.error?.message || "Failed to delete guardian. Please try again.");
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'Your child record is safe :)',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#006a6a' 
+        });
       }
     });
   }
+  
 
   editGuardian(contact: any): void {
     this.openAddGuardianDialog(contact);
@@ -107,23 +134,26 @@ export class GuardianTableComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== false) {
+        if (result.isPrimaryContact) {
+          this.guardians = this.guardians.map((guardian) => ({
+            ...guardian,
+            isPrimaryContact: false
+          }));
+        }
+        if (result.id) {
+          this.guardians = this.guardians.map((guardian) =>
+            guardian.id === result.id ? { ...guardian, ...result } : guardian
+          );
+        }
+        this.dataSource.data=this.guardians
         this.guardianService.addOrUpdateGuardian(result.id, result).subscribe((data) => {
-          if (data.isPrimaryContact) {
-            this.guardians = this.guardians.map((guardian) => ({
-              ...guardian,
-              isPrimaryContact: false
-            }));
-          }
-          if (result.id) {
-            this.guardians = this.guardians.map((guardian) =>
-              guardian.id === data.id ? { ...guardian, ...data } : guardian
-            );
-          } else {
-            this.guardians = [...this.guardians, { ...data }];
+          
+           if(!result.id) {
             setTimeout(() => {
               window.location.reload();
             }, 2000);
           }
+         
           this.toastr.success(data.id ? 'Relation Updated successfully' : 'Relation Created successfully');
         });
       }
@@ -183,8 +213,6 @@ export class GuardianTableComponent {
   
     const dialogRef = this.dialog.open(GenogramComponent, {
       panelClass: 'custom-dialog-container',
-      width: '80vw',
-      height: '80vh',
       data: {
         nodes: nodes,
         links: links,
@@ -192,12 +220,12 @@ export class GuardianTableComponent {
         relationships: this.guardians, 
       },
     });
-  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Genogram dialog closed with result:', result);
       }
     });
+    
   }
   
   

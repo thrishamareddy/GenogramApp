@@ -21,12 +21,6 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Last Name</mat-label>
           <input matInput formControlName="lastName" />
-          <mat-error *ngIf="guardianForm.get('lastName')?.hasError('required')">
-            Last Name is required.
-          </mat-error>
-          <mat-error *ngIf="guardianForm.get('lastName')?.hasError('pattern')">
-            Invalid Last Name
-          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
@@ -75,10 +69,10 @@
       </div>
     </div>
   </form>
-
-  <mat-dialog-actions class="button-container">
-    <button mat-raised-button color="warn" mat-dialog-close="false">Cancel</button> 
-    <button mat-raised-button color="primary" [mat-dialog-close]="guardianForm.value" [disabled]="!guardianForm.valid">Save</button>  
-  </mat-dialog-actions>
   
 </mat-dialog-content>
+  <mat-dialog-actions class="button-container">
+    <button mat-raised-button color="warn" mat-dialog-close="false">Cancel</button> 
+    <button mat-raised-button  style="background-color: #006a6a; color: white;" [mat-dialog-close]="guardianForm.value" [disabled]="!guardianForm.valid">Save</button>  
+  </mat-dialog-actions>
+  

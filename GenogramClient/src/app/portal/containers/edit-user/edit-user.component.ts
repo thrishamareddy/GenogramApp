@@ -53,7 +53,6 @@ export class EditUserComponent {
 
   onSave(): void {
     if (this.editForm.valid) {
-      debugger
       const action = this.isEditMode ? 'updated' : 'added';
       this.dialogRef.close(this.editForm.value);
       this.toastr.success(`User ${action} successfully.`);

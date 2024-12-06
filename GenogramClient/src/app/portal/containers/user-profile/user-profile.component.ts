@@ -17,7 +17,6 @@ export class UserProfileComponent {
   constructor(private dialog: MatDialog, private childService: ChildService) {}
 
   openEditDialog(): void {
-    debugger
     const dialogRef = this.dialog.open(EditUserComponent, {
       width: '650px',
       data: { user: this.user },

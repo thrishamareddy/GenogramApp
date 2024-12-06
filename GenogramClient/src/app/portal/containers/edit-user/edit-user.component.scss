@@ -25,7 +25,9 @@
   padding-bottom: 30px;
   animation: fadeIn 0.5s ease-in-out;
 }
-
+.form-field{
+  margin: 10px 0px;
+}
 .edit-title {
   text-align: center;
   font-size: 22px;
@@ -50,7 +52,7 @@
   width: 45%;
 }
 button[color="primary"] {
-  background-color: #5ea69a;
+  background-color: #40877b;
   color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

@@ -21,10 +21,11 @@
   text-transform: capitalize;
   animation: slideIn 0.5s ease-in-out;
 }
-.form-field {
-  width: 100%;
-}
 
+.form-field{
+  width: 100%;
+  margin: 10px 0px;
+}
 .mat-dialog-content {
   padding-bottom: 20px; 
 }
@@ -54,7 +55,7 @@
   margin-bottom: 30px; 
 }
 button[color="primary"] {
-  background-color: #5ea69a;
+  background-color: #40877b;
   color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

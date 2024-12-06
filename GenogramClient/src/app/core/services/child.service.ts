@@ -16,7 +16,6 @@ export class ChildService {
 
   private baseUrl = 'https://localhost:7263/api/Home';
   getAllChild(): Observable<any>{
-    debugger
     return this.http.get(`${this.baseUrl}/ChildDetails`);
   }
   getChildDetails(Id:number): Observable<any> {
@@ -29,7 +28,6 @@ export class ChildService {
     return this.http.post(`${this.baseUrl}/CreateChild`,child);
   }
   Delete(child: any) {
-    debugger
     const jsonChild = JSON.stringify(child); 
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

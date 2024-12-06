@@ -22,7 +22,6 @@ export class GenogramComponent {
     this.nodes = data.nodes; 
     this.links = data.links;
     this.name=this.childService.getChildName();
-    window.addEventListener('resize', () => this.adjustGraphPosition());
   }
   curve: any = shape.curveLinear;
   graphWidth: number = window.innerWidth;
@@ -34,8 +33,6 @@ export class GenogramComponent {
   }
   nodes: Node[] = [];
   links: Edge[] = [];
-  width = window.innerWidth;
-  height = window.innerHeight;
   name:any;
   layoutConfig = {  
     orientation:'TB',
@@ -50,31 +47,10 @@ export class GenogramComponent {
   onLinkHover(link: any): void {
     console.log('Hovered over link:', link);
   }
-  onResize(event: Event): void {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-  }
+  
   closeGenogram() {
     this.dialogRef.close();
     }
-  
-  adjustGraphPosition(): void {
-    const container = document.querySelector('.chart-container') as HTMLElement;
-    const graph = container.querySelector('svg') as SVGElement;
-  
-    if (container && graph) {
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
-  
-      const graphWidth = graph.getBoundingClientRect().width;
-      const graphHeight = graph.getBoundingClientRect().height;
-  
-      const xOffset = (containerWidth - graphWidth) / 2;
-      const yOffset = (containerHeight - graphHeight) / 2;
-      graph.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
-    }
-  }
-  
   
 }
 

@@ -1,10 +1,13 @@
 <div class="header-container">
-  <h5 class="genogram-title">
-    <mat-icon>child_care</mat-icon> 
-    ChildCare
+  <h5>
+    <button mat-button class="child-button" (click)="goBack()" >
+      <div class="genogram-title">
+        ChildCare
+      </div>
+    </button>
   </h5>
   <button mat-button class="back-button" (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon> 
+    <mat-icon class="back-icon">arrow_back</mat-icon> 
     Back
   </button>
   

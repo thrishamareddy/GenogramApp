@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +19,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
 const MaterialModules=[
   CommonModule,
   MatListModule,
@@ -51,6 +52,8 @@ const MaterialModules=[
   MatCheckboxModule,
   MatSelectModule,
   MatButtonModule,
+  MatIconModule,
+  MatMenuModule
 ]
 
 @NgModule({

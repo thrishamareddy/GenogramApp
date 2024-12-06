@@ -14,7 +14,6 @@ export class GuardianService {
   constructor(private http: HttpClient) {}
 
   addOrUpdateGuardian(id:any,guardian:any): Observable<any> {
-    debugger;
     const url = id
       ? `${this.apiUrl}/Guardian/${id}`
       : `${this.apiUrl}/Guardian`;
